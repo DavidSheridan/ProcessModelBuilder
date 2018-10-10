@@ -10,7 +10,7 @@ public interface Terminal {
      * Returns a {@code String} representation of this {@code Terminal} as it
      * is defined by the Process Modeller grammar.
      *
-     * @return The {@code String} representation
+     * @return The {@code String} representation.
      */
     String getValue();
 
