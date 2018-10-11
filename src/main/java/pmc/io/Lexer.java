@@ -1,5 +1,6 @@
 package pmc.io;
 
+import pmc.lang.Terminal;
 import pmc.util.Position;
 import pmc.util.SyntacticElement;
 
@@ -69,6 +70,35 @@ public class Lexer {
             }
 
             return false;
+        }
+
+    }
+
+    /**
+     * The {@code Terminal} class represents any terminal element defined in the Process
+     * Modeller grammar within an input stream.
+     */
+    public static class TerminalToken extends Token<Terminal> {
+
+        /**
+         * Constructs a new instance of a {@code TerminalToken} with the specified
+         * {@code Terminal} value.
+         *
+         * @param value The {@code Terminal} value this {@code TerminalToken} represents.
+         */
+        public TerminalToken(Terminal value){
+            super(value);
+        }
+
+        /**
+         * Constructs a new instance of a {@code TerminalToken} object with the specified
+         * {@code Terminal} value and {@code Position}.
+         *
+         * @param value The {@code Terminal} value this {@code TerminalToken} represents.
+         * @param position The position of the value in its input stream.
+         */
+        public TerminalToken(Terminal value, Position position){
+            super(value, position);
         }
 
     }
