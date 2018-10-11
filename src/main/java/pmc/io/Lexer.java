@@ -1,16 +1,33 @@
 package pmc.io;
 
+import pmc.lang.ProcessType;
 import pmc.lang.Terminal;
+import pmc.lang.TerminalSymbol;
+import pmc.lang.TerminatorType;
 import pmc.util.Position;
 import pmc.util.SyntacticElement;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Lexer {
 
-    // field
+    /**
+     * A mapping from the {@code String} representation of terminals in the Process Modeller grammar to
+     * their internal representation.
+     */
+    private static final Map<String, Terminal> terminalMap = new HashMap<String, Terminal>(){
+        {
+            Arrays.stream(ProcessType.values()).forEach(terminal -> put(terminal.getValue(), terminal));
+            Arrays.stream(TerminalSymbol.values()).forEach(terminal -> put(terminal.getValue(), terminal));
+            Arrays.stream(TerminatorType.values()).forEach(terminal -> put(terminal.getValue(), terminal));
+        }
+    };
+
+    // fields
     private String input;
+    private int index;
+    private int line;
+    private int column;
 
     /**
      * Constructs a new instance of a {@code Lexer} with the specified
@@ -20,6 +37,9 @@ public class Lexer {
      */
     public Lexer(String input){
         this.input = input;
+        this.index = 0;
+        this.line = 0;
+        this.column = 0;
     }
 
     /**
@@ -31,7 +51,39 @@ public class Lexer {
     public List<Token> scan(){
         List<Token> tokens = new ArrayList<Token>();
 
+        while(index < input.length()){
+            int lineStart = line;
+            int columnStart = column;
+
+            String terminal = parseTerminal();
+            if(!terminalMap.containsKey(terminal)){
+                // TODO: throw error
+            }
+
+            tokens.add(new TerminalToken(terminalMap.get(terminal), new Position(lineStart, columnStart, line, column)));
+        }
+
         return tokens;
+    }
+
+    /**
+     * Parses a terminal string from the current position in the input. Once the method is complete
+     * the index points to the character after the final character in the terminal string.
+     *
+     * @return The terminal string at the current position in the input.
+     */
+    private String parseTerminal(){
+        int start = index;
+        while(index < input.length()){
+            char c = input.charAt(index);
+            if(Character.isWhitespace(c) || terminalMap.containsKey(input.substring(start, index))){
+                break;
+            }
+
+            index++;
+        }
+
+        return input.substring(start, index);
     }
 
     /**
