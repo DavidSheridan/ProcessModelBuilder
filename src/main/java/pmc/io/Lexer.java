@@ -4,7 +4,35 @@ import pmc.lang.Terminal;
 import pmc.util.Position;
 import pmc.util.SyntacticElement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Lexer {
+
+    // field
+    private String input;
+
+    /**
+     * Constructs a new instance of a {@code Lexer} with the specified
+     * {@code String} input.
+     *
+     * @param input The input {@code String}.
+     */
+    public Lexer(String input){
+        this.input = input;
+    }
+
+    /**
+     * Scans through the input and constructs the corresponding {@code List} of
+     * {@code Token}s.
+     *
+     * @return The corresponding {@code List} of {@code Token}s.
+     */
+    public List<Token> scan(){
+        List<Token> tokens = new ArrayList<Token>();
+
+        return tokens;
+    }
 
     /**
      * The {@code Token} class represents an element from the Process Modeller grammar within
