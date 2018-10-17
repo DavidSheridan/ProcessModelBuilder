@@ -1,9 +1,9 @@
 package pmc.io;
 
-import pmc.lang.ProcessType;
-import pmc.lang.Terminal;
-import pmc.lang.TerminalSymbol;
-import pmc.lang.TerminatorType;
+import pmc.lang.terminal.ProcessType;
+import pmc.lang.terminal.Terminal;
+import pmc.lang.terminal.TerminalSymbol;
+import pmc.lang.terminal.TerminatorType;
 import pmc.util.Position;
 import pmc.util.SyntacticElement;
 

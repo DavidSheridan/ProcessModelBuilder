@@ -1,4 +1,4 @@
-package pmc.lang;
+package pmc.lang.terminal;
 
 /**
  * The {@code Terminal} interface is a superclass for all terminals in the Process

@@ -1,6 +1,6 @@
 package pmc.lang.definition;
 
-import pmc.lang.ProcessType;
+import pmc.lang.terminal.ProcessType;
 import pmc.util.Position;
 import pmc.util.SyntacticElement;
 

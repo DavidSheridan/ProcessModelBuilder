@@ -1,6 +1,6 @@
 package pmc.lang.process;
 
-import pmc.lang.TerminatorType;
+import pmc.lang.terminal.TerminatorType;
 import pmc.util.Position;
 import pmc.util.SyntacticElement;
 

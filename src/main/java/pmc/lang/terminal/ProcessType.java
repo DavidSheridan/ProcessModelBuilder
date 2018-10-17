@@ -1,4 +1,4 @@
-package pmc.lang;
+package pmc.lang.terminal;
 
 /**
  * An enum representing the process type terminals found in the Process Modeller grammar.

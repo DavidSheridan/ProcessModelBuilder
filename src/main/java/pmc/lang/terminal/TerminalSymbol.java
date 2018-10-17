@@ -1,4 +1,6 @@
-package pmc.lang;
+package pmc.lang.terminal;
+
+import pmc.lang.terminal.Terminal;
 
 /**
  * An enum representing the terminal symbols found in the Process Modeller grammar.

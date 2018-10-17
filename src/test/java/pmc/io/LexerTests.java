@@ -4,10 +4,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import pmc.lang.ProcessType;
-import pmc.lang.Terminal;
-import pmc.lang.TerminalSymbol;
-import pmc.lang.TerminatorType;
+import pmc.lang.terminal.ProcessType;
+import pmc.lang.terminal.Terminal;
+import pmc.lang.terminal.TerminalSymbol;
+import pmc.lang.terminal.TerminatorType;
 
 import java.util.Arrays;
 
