@@ -6,6 +6,7 @@ import pmc.lang.terminal.TerminalSymbol;
 import pmc.lang.terminal.TerminatorType;
 import pmc.util.Position;
 import pmc.util.SyntacticElement;
+import pmc.util.SyntaxError;
 
 import java.util.*;
 
@@ -52,18 +53,47 @@ public class Lexer {
         List<Token> tokens = new ArrayList<Token>();
 
         while(index < input.length()){
+            skipWhitespace();
+
             int lineStart = line;
             int columnStart = column;
 
-            String terminal = parseTerminal();
-            if(!terminalMap.containsKey(terminal)){
-                // TODO: throw error
+            if(Character.isUpperCase(input.charAt(index))){
+                String value = parseUpperCaseIdentifier();
+                if(terminalMap.containsKey(value)){
+                    tokens.add(new TerminalToken(terminalMap.get(value), new Position(lineStart, columnStart, line, column)));
+                }
+                else{
+                    tokens.add(new UpperCaseIdentifierToken(value, new Position(lineStart, columnStart, line, column)));
+                }
             }
+            else{
+                String terminal = parseTerminal();
+                if(!terminalMap.containsKey(terminal)){
+                    throw new SyntaxError("invalid terminal: " + terminal, new Position(lineStart, columnStart, line, column));
+                }
 
-            tokens.add(new TerminalToken(terminalMap.get(terminal), new Position(lineStart, columnStart, line, column)));
+                tokens.add(new TerminalToken(terminalMap.get(terminal), new Position(lineStart, columnStart, line, column)));
+            }
         }
 
         return tokens;
+    }
+
+    private String parseUpperCaseIdentifier(){
+        int start = index;
+        while(index < input.length()){
+            char c = input.charAt(index);
+            if(Character.isLetterOrDigit(c) || c == '_'){
+                index++;
+                column++;
+            }
+            else{
+                break;
+            }
+        }
+
+        return input.substring(start, index);
     }
 
     /**
@@ -84,6 +114,28 @@ public class Lexer {
         }
 
         return input.substring(start, index);
+    }
+
+    /**
+     * Skips the whitespace at the current position of the input. Once the method is
+     * executed the index points to
+     */
+    private void skipWhitespace(){
+        while(index < input.length()){
+            char c = input.charAt(index);
+            if(c == ' ' || c == '\t'){
+                column++;
+            }
+            else if(c == '\n' || c == '\r'){
+                line++;
+                column = 0;
+            }
+            else{
+                break;
+            }
+
+            index++;
+        }
     }
 
     /**

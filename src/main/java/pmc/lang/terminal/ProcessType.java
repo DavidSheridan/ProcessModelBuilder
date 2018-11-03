@@ -29,4 +29,15 @@ public enum ProcessType implements Terminal {
     public String getValue(){
         return value;
     }
+
+    /**
+     * Returns a {@code String} representation of this {@code ProcessType}.
+     *
+     * @return A {@code String} representation of this {@code ProcessType}.
+     */
+    @Override
+    public String toString(){
+        return value;
+    }
+
 }
