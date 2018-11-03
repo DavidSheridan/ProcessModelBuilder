@@ -154,6 +154,18 @@ public class Lexer {
 
     }
 
+    public static class UpperCaseIdentifierToken extends Token<String> {
+
+        public UpperCaseIdentifierToken(String value){
+            super(value);
+        }
+
+        public UpperCaseIdentifierToken(String value, Position position){
+            super(value, position);
+        }
+
+    }
+
     /**
      * The {@code Terminal} class represents any terminal element defined in the Process
      * Modeller grammar within an input stream.
