@@ -1,4 +1,4 @@
-package pmc.action;
+package pmc.lang.action;
 
 public interface Action {
 
