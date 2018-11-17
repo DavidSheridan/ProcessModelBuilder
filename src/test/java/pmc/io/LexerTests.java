@@ -9,9 +9,11 @@ import pmc.lang.terminal.ProcessType;
 import pmc.lang.terminal.Terminal;
 import pmc.lang.terminal.TerminalSymbol;
 import pmc.lang.terminal.TerminatorType;
+import test.generator.SequenceTests;
 import test.generator.TerminatorTests;
 import test.processor.TestProcessor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -117,6 +119,91 @@ public class LexerTests {
                     new TerminalToken(TerminalSymbol.CLOSE_PAREN),
                     new TerminalToken(TerminalSymbol.DOT)
             );
+        }
+
+    }
+
+    @Nested
+    @DisplayName("sequence tests")
+    public class LexerSequenceTests extends SequenceTests<List<Token>> {
+
+        /**
+         * Constructs a new instance of a {@code LexerSequenceTests} object.
+         */
+        public LexerSequenceTests(){
+            super(TestProcessor.LEXER);
+        }
+
+        /**
+         * Generates and returns the expected {@code List} of {@code Token}s for the specified {@code TestData}
+         * without parentheses.
+         *
+         * @param data The test data required to generate the expected {@ocde List} of {@code Token}s.
+         * @return The expected {@ocde List} of {@code Token}s.
+         */
+        public List<Token> expectedWithoutParentheses(TestData data){
+            List<Token> tokens = new ArrayList<Token>();
+            tokens.add(new TerminalToken(data.processType));
+            tokens.add(new UpperCaseIdentifierToken(data.identifier));
+            tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+            for(String action : data.actions){
+                tokens.add(new LowerCaseIdentifierToken(action));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+            }
+            tokens.add(new TerminalToken(data.terminator));
+            tokens.add(new TerminalToken(TerminalSymbol.DOT));
+
+            return tokens;
+        }
+
+        /**
+         * Generates and returns the expected {@code List} of {@code Token}s for the specified {@code TestData}
+         * with parentheses.
+         *
+         * @param data The test data required to generate the expected {@ocde List} of {@code Token}s.
+         * @return The expected {@ocde List} of {@code Token}s.
+         */
+        public List<Token> expectedWithParentheses(TestData data){
+            List<Token> tokens = new ArrayList<Token>();
+            tokens.add(new TerminalToken(data.processType));
+            tokens.add(new UpperCaseIdentifierToken(data.identifier));
+            tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+            tokens.add(new TerminalToken(TerminalSymbol.OPEN_PAREN));
+            for(String action : data.actions){
+                tokens.add(new LowerCaseIdentifierToken(action));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+            }
+            tokens.add(new TerminalToken(data.terminator));
+            tokens.add(new TerminalToken(TerminalSymbol.CLOSE_PAREN));
+            tokens.add(new TerminalToken(TerminalSymbol.DOT));
+
+            return tokens;
+        }
+
+        /**
+         * Generates and returns the expected {@code List} of {@code Token}s for the specified {@code TestData}
+         * with nested sequences.
+         *
+         * @param data The test data required to generate the expected {@ocde List} of {@code Token}s.
+         * @return The expected {@ocde List} of {@code Token}s.
+         */
+        public List<Token> expectedWithNesting(TestData data){
+            List<Token> tokens = new ArrayList<Token>();
+            tokens.add(new TerminalToken(data.processType));
+            tokens.add(new UpperCaseIdentifierToken(data.identifier));
+            tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+            for(String action : data.actions){
+                tokens.add(new TerminalToken(TerminalSymbol.OPEN_PAREN));
+                tokens.add(new LowerCaseIdentifierToken(action));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+            }
+            tokens.add(new TerminalToken(data.terminator));
+            for(int i = 0; i < data.actions.length; i++){
+                tokens.add(new TerminalToken(TerminalSymbol.CLOSE_PAREN));
+            }
+            tokens.add(new TerminalToken(TerminalSymbol.DOT));
+
+            return tokens;
         }
 
     }
