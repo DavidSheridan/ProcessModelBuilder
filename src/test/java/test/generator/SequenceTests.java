@@ -174,7 +174,7 @@ public abstract class SequenceTests<ExpectedType> {
         for(int i = 0; i < data.actions.length; i++){
             builder.append(")");
         }
-        builder.append(data.terminator + ".");
+        builder.append(".");
 
         return builder.toString();
     }
