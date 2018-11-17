@@ -76,10 +76,20 @@ public class LexerTests {
     @DisplayName("terminator tests")
     public class LexerTerminatorTests extends TerminatorTests<List<Token>> {
 
+        /**
+         * Constructs a new instance of a {@code LexerTerminatorTests} object.
+         */
         public LexerTerminatorTests(){
             super(TestProcessor.LEXER);
         }
 
+        /**
+         * Generates and returns the expected {@code List} of {@code Token}s for the specified {@code TestData}
+         * without parentheses.
+         *
+         * @param data The test data required to generate the expected {@ocde List} of {@code Token}s.
+         * @return The expected {@ocde List} of {@code Token}s.
+         */
         public List<Lexer.Token> expectedWithoutParentheses(TestData data){
             return Arrays.asList(
                     new TerminalToken(data.processType),
@@ -90,6 +100,13 @@ public class LexerTests {
             );
         }
 
+        /**
+         * Generates and returns the expected {@code List} of {@code Token}s for the specified {@code TestData}
+         * with parentheses.
+         *
+         * @param data The test data required to generate the expected {@ocde List} of {@code Token}s.
+         * @return The expected {@ocde List} of {@code Token}s.
+         */
         public List<Lexer.Token> expectedWithParentheses(TestData data){
             return Arrays.asList(
                     new TerminalToken(data.processType),
