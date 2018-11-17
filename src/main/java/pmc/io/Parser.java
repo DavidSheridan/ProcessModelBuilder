@@ -2,10 +2,15 @@ package pmc.io;
 
 import pmc.io.Lexer.*;
 import pmc.lang.AST;
+import pmc.lang.action.Action;
+import pmc.lang.action.ActionElementList;
+import pmc.lang.action.element.ActionElement;
+import pmc.lang.action.element.StringActionElement;
 import pmc.lang.definition.BlockDefinition;
 import pmc.lang.definition.Definition;
 import pmc.lang.definition.ProcessDefinition;
 import pmc.lang.process.Process;
+import pmc.lang.process.Sequence;
 import pmc.lang.process.Terminator;
 import pmc.lang.terminal.ProcessType;
 import pmc.lang.terminal.Terminal;
@@ -57,6 +62,9 @@ public class Parser {
     }
 
     private Process parseProcess(){
+        if(peek() instanceof LowerCaseIdentifierToken){
+            return parseSequence();
+        }
         if(hasNext(TerminatorType.values())){
             return parseTerminator();
         }
@@ -71,12 +79,39 @@ public class Parser {
         throw new SyntaxError("expecting to parse a process but received: " + peek(), peek().getPosition());
     }
 
+    private Sequence parseSequence(){
+        Action action = parseAction();
+        match(TerminalSymbol.SEQUENCE);
+        Process next = parseProcess();
+
+
+        return new Sequence(action, next);
+    }
+
     private Terminator parseTerminator(){
         if(hasNext(TerminatorType.values())){
             return new Terminator((TerminatorType)match(TerminatorType.values()));
         }
 
         throw new SyntaxError("expecting to parse a terminator but received: " + peek(), peek().getPosition());
+    }
+
+    private Action parseAction(){
+        List<ActionElement> elements = new ArrayList<ActionElement>();
+
+        while(index < tokens.size()){
+            Token token = peek();
+            if(token instanceof LowerCaseIdentifierToken){
+                elements.add(new StringActionElement(((LowerCaseIdentifierToken)token).getValue()));
+            }
+            else{
+                break;
+            }
+
+            index++;
+        }
+
+        return new ActionElementList(elements);
     }
 
     private Terminal match(Terminal...values){
