@@ -64,4 +64,37 @@ public class TestUtil {
         }
     }
 
+    /**
+     * Takes an {@code Object} array and generates a series of arrays such that:
+     * <pre>
+     *     output[i] = Arrays.copyOfRange(array, 0, i + 1);
+     * </pre>
+     *
+     * @param array The array to generate a series of.
+     * @return The generated series of ranges.
+     */
+    public static final Object[][] series(Object[] array){
+        return series(array, 1);
+    }
+
+    /**
+     * Takes an {@code Object} array and generates a series of arrays such that:
+     * <pre>
+     *     output[i] = Arrays.copyOfRange(array, 0, i + 1);
+     * </pre>
+     *
+     * @param array The array to generate a series of.
+     * @param start Index position the range should start.
+     * @return The generated series of ranges.
+     */
+    public static final Object[][] series(Object[] array, int start){
+        Object[][] sequence = new Object[array.length - start + 1][];
+        int index = 0;
+        for(int i = start; i <= array.length; i++){
+            sequence[index++] = Arrays.copyOfRange(array, 0, i);
+        }
+
+        return sequence;
+    }
+
 }
