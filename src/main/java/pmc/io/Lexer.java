@@ -218,6 +218,17 @@ public class Lexer {
 
     }
 
+    public static class LowerCaseIdentifierToken extends Token<String> {
+
+        public LowerCaseIdentifierToken(String value){
+            super(value);
+        }
+
+        public LowerCaseIdentifierToken(String value, Position position){
+            super(value, position);
+        }
+    }
+
     /**
      * The {@code Terminal} class represents any terminal element defined in the Process
      * Modeller grammar within an input stream.
