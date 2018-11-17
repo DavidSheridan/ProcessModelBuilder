@@ -59,12 +59,21 @@ public class Lexer {
             int columnStart = column;
 
             if(Character.isUpperCase(input.charAt(index))){
-                String value = parseUpperCaseIdentifier();
+                String value = parseString();
                 if(terminalMap.containsKey(value)){
                     tokens.add(new TerminalToken(terminalMap.get(value), new Position(lineStart, columnStart, line, column)));
                 }
                 else{
                     tokens.add(new UpperCaseIdentifierToken(value, new Position(lineStart, columnStart, line, column)));
+                }
+            }
+            else if(Character.isLowerCase(input.charAt(index))){
+                String value = parseString();
+                if(terminalMap.containsKey(value)){
+                    tokens.add(new TerminalToken(terminalMap.get(value), new Position(lineStart, columnStart, line, column)));
+                }
+                else{
+                    tokens.add(new LowerCaseIdentifierToken(value, new Position(lineStart, columnStart, line, column)));
                 }
             }
             else{
@@ -80,7 +89,7 @@ public class Lexer {
         return tokens;
     }
 
-    private String parseUpperCaseIdentifier(){
+    private String parseString(){
         int start = index;
         while(index < input.length()){
             char c = input.charAt(index);
