@@ -10,6 +10,9 @@ import pmc.lang.definition.ProcessDefinition;
 import pmc.lang.process.Process;
 import pmc.lang.process.Sequence;
 import pmc.lang.process.Terminator;
+import pmc.lang.terminal.ProcessType;
+import pmc.lang.terminal.TerminatorType;
+import test.generator.ExampleTests;
 import test.generator.SequenceTests;
 import test.generator.TerminatorTests;
 import test.processor.TestProcessor;
@@ -106,6 +109,29 @@ public class ParserTests {
         @Override
         public AST expectedWithNesting(TestData data){
             return expectedWithoutParentheses(data);
+        }
+
+    }
+
+    @Nested
+    @DisplayName("example tests")
+    public class ParserExampleTests extends ExampleTests<AST> {
+
+        public ParserExampleTests(){
+            super(TestProcessor.PARSER);
+        }
+
+        @Override
+        public AST expectedTeaExample(){
+            Sequence sequence = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))), new Terminator(TerminatorType.STOP));
+            return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "Tea", sequence)));
+        }
+
+        @Override
+        public AST expectedTeaTwoExample(){
+            Sequence sequence = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))), new Terminator(TerminatorType.STOP));
+            sequence = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement("teaButton"))), sequence);
+            return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "Tea", sequence)));
         }
 
     }
