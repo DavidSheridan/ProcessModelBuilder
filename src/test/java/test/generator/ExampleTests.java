@@ -19,7 +19,7 @@ public abstract class ExampleTests<ExpectedType> {
     @DisplayName("automata Tea = (takeTea -> STOP).")
     public void teaExampleTest(){
         ExpectedType expected = expectedTeaExample();
-        ExpectedType result = processor.process("automata Tea = takeTea -> STOP).");
+        ExpectedType result = processor.process("automata Tea = (takeTea -> STOP).");
         assertEquals(expected, result);
     }
 
@@ -29,7 +29,7 @@ public abstract class ExampleTests<ExpectedType> {
     @DisplayName("automata TeaTwo = (teaButton -> takeTea -> STOP).")
     public void teaTwoExampleTest(){
         ExpectedType expected = expectedTeaTwoExample();
-        ExpectedType result = processor.process("automata Tea = teaButton -> takeTea -> STOP).");
+        ExpectedType result = processor.process("automata Tea = (teaButton -> takeTea -> STOP).");
         assertEquals(expected, result);
     }
 

@@ -9,6 +9,7 @@ import pmc.lang.terminal.ProcessType;
 import pmc.lang.terminal.Terminal;
 import pmc.lang.terminal.TerminalSymbol;
 import pmc.lang.terminal.TerminatorType;
+import test.generator.ExampleTests;
 import test.generator.SequenceTests;
 import test.generator.TerminatorTests;
 import test.processor.TestProcessor;
@@ -204,6 +205,48 @@ public class LexerTests {
             tokens.add(new TerminalToken(TerminalSymbol.DOT));
 
             return tokens;
+        }
+
+    }
+
+    @Nested
+    @DisplayName("example tests")
+    public class LexerExampleTests extends ExampleTests<List<Token>> {
+
+        public LexerExampleTests(){
+            super(TestProcessor.LEXER);
+        }
+
+        @Override
+        public List<Token> expectedTeaExample(){
+            return Arrays.asList(
+                    new TerminalToken(ProcessType.AUTOMATA),
+                    new UpperCaseIdentifierToken("Tea"),
+                    new TerminalToken(TerminalSymbol.ASSIGN),
+                    new TerminalToken(TerminalSymbol.OPEN_PAREN),
+                    new LowerCaseIdentifierToken("takeTea"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new TerminalToken(TerminatorType.STOP),
+                    new TerminalToken(TerminalSymbol.CLOSE_PAREN),
+                    new TerminalToken(TerminalSymbol.DOT)
+            );
+        }
+
+        @Override
+        public List<Token> expectedTeaTwoExample(){
+            return Arrays.asList(
+                    new TerminalToken(ProcessType.AUTOMATA),
+                    new UpperCaseIdentifierToken("Tea"),
+                    new TerminalToken(TerminalSymbol.ASSIGN),
+                    new TerminalToken(TerminalSymbol.OPEN_PAREN),
+                    new LowerCaseIdentifierToken("teaButton"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new LowerCaseIdentifierToken("takeTea"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new TerminalToken(TerminatorType.STOP),
+                    new TerminalToken(TerminalSymbol.CLOSE_PAREN),
+                    new TerminalToken(TerminalSymbol.DOT)
+            );
         }
 
     }
