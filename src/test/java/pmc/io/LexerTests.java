@@ -236,7 +236,7 @@ public class LexerTests {
         public List<Token> expectedTeaTwoExample(){
             return Arrays.asList(
                     new TerminalToken(ProcessType.AUTOMATA),
-                    new UpperCaseIdentifierToken("Tea"),
+                    new UpperCaseIdentifierToken("TeaTwo"),
                     new TerminalToken(TerminalSymbol.ASSIGN),
                     new TerminalToken(TerminalSymbol.OPEN_PAREN),
                     new LowerCaseIdentifierToken("teaButton"),
