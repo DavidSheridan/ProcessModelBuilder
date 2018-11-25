@@ -213,6 +213,16 @@ public class Lexer {
             return false;
         }
 
+        /**
+         * Returns a {@code String} representation of this {@code Token}.
+         *
+         * @return A {@code String} representation of this {@code Token}.
+         */
+        @Override
+        public String toString(){
+            return value.toString();
+        }
+
     }
 
     public static class UpperCaseIdentifierToken extends Token<String> {
