@@ -10,6 +10,7 @@ import pmc.lang.definition.BlockDefinition;
 import pmc.lang.definition.Definition;
 import pmc.lang.definition.ProcessDefinition;
 import pmc.lang.process.Process;
+import pmc.lang.process.Reference;
 import pmc.lang.process.Sequence;
 import pmc.lang.process.Terminator;
 import pmc.lang.terminal.ProcessType;
@@ -65,8 +66,11 @@ public class Parser {
         if(peek() instanceof LowerCaseIdentifierToken){
             return parseSequence();
         }
-        if(hasNext(TerminatorType.values())){
+        else if(hasNext(TerminatorType.values())){
             return parseTerminator();
+        }
+        else if(peek() instanceof UpperCaseIdentifierToken){
+            return parseReference();
         }
         else if(hasNext(TerminalSymbol.OPEN_PAREN)){
             match(TerminalSymbol.OPEN_PAREN);
@@ -94,6 +98,15 @@ public class Parser {
         }
 
         throw new SyntaxError("expecting to parse a terminator but received: " + peek(), peek().getPosition());
+    }
+
+    private Reference parseReference(){
+        Token token = next();
+        if(!(token instanceof UpperCaseIdentifierToken)){
+            throw new SyntaxError("expecting to parse a reference but received: " + token, token.getPosition());
+        }
+
+        return new Reference(((UpperCaseIdentifierToken)token).getValue());
     }
 
     private Action parseAction(){
