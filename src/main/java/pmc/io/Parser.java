@@ -9,10 +9,8 @@ import pmc.lang.action.element.StringActionElement;
 import pmc.lang.definition.BlockDefinition;
 import pmc.lang.definition.Definition;
 import pmc.lang.definition.ProcessDefinition;
+import pmc.lang.process.*;
 import pmc.lang.process.Process;
-import pmc.lang.process.Reference;
-import pmc.lang.process.Sequence;
-import pmc.lang.process.Terminator;
 import pmc.lang.terminal.ProcessType;
 import pmc.lang.terminal.Terminal;
 import pmc.lang.terminal.TerminalSymbol;
@@ -47,7 +45,7 @@ public class Parser {
         ProcessType processType = (ProcessType)match(ProcessType.values());
         String identifier = parseIdentifier();
         match(TerminalSymbol.ASSIGN);
-        Process process = parseProcess();
+        Process process = parseChoice();
         match(TerminalSymbol.DOT);
 
         return new ProcessDefinition(processType, identifier, process);
@@ -62,6 +60,17 @@ public class Parser {
         throw new SyntaxError("expecting to parse an identifier but received: " + token, token.getPosition());
     }
 
+    private Process parseChoice(){
+        Process firstBranch = parseProcess();
+        if(hasNext(TerminalSymbol.CHOICE)){
+            match(TerminalSymbol.CHOICE);
+            Process secondBranch = parseChoice();
+            return new Choice(firstBranch, secondBranch);
+        }
+
+        return firstBranch;
+    }
+
     private Process parseProcess(){
         if(peek() instanceof LowerCaseIdentifierToken){
             return parseSequence();
@@ -74,7 +83,7 @@ public class Parser {
         }
         else if(hasNext(TerminalSymbol.OPEN_PAREN)){
             match(TerminalSymbol.OPEN_PAREN);
-            Process process = parseProcess();
+            Process process = parseChoice();
             match(TerminalSymbol.CLOSE_PAREN);
 
             return process;
