@@ -501,5 +501,5 @@ public abstract class ChoiceTests<ExpectedType> {
         }
 
     }
-    
+
 }
