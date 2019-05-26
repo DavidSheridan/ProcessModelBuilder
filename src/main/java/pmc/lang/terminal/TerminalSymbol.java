@@ -1,12 +1,11 @@
 package pmc.lang.terminal;
 
-import pmc.lang.terminal.Terminal;
-
 /**
  * An enum representing the terminal symbols found in the Process Modeller grammar.
  */
 public enum TerminalSymbol implements Terminal {
     ASSIGN("="),
+    CHOICE("|"),
     CLOSE_PAREN(")"),
     DOT("."),
     OPEN_PAREN("("),
