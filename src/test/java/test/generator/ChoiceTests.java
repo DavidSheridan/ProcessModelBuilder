@@ -443,7 +443,7 @@ public abstract class ChoiceTests<ExpectedType> {
          */
         private String inputWithNesting(MultiBranchChoiceTests.TestData data){
             StringBuilder builder = new StringBuilder();
-            builder.append(data.processType + " " + data.identifier + " = ");
+            builder.append(data.processType + " " + data.identifier + " = (");
             for(int i = 0; i < data.actions.length; i++){
                 builder.append( "(" + data.actions[i] + " -> " + data.identifier + ")");
                 if(i < data.actions.length -1){
