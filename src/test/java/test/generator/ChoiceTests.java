@@ -120,7 +120,7 @@ public abstract class ChoiceTests<ExpectedType> {
         @TestFactory
         @DisplayName("parenthesised tests")
         public Stream<DynamicTest> testsWithParentheses(){
-            return generateTestDataStream().map(data -> generateTestCase(TestType.WITHOUT_PAREN, data));
+            return generateTestDataStream().map(data -> generateTestCase(TestType.WITH_PAREN, data));
         }
 
         /**
@@ -132,7 +132,7 @@ public abstract class ChoiceTests<ExpectedType> {
         @TestFactory
         @DisplayName("nested tests")
         public Stream<DynamicTest> testsWithNesting(){
-            return generateTestDataStream().map(data -> generateTestCase(TestType.WITHOUT_PAREN, data));
+            return generateTestDataStream().map(data -> generateTestCase(TestType.NESTED, data));
         }
 
         /**
@@ -333,7 +333,7 @@ public abstract class ChoiceTests<ExpectedType> {
         @TestFactory
         @DisplayName("parenthesised tests")
         public Stream<DynamicTest> testsWithParentheses(){
-            return generateTestDataStream().map(data -> generateTestCase(TestType.WITHOUT_PAREN, data));
+            return generateTestDataStream().map(data -> generateTestCase(TestType.WITH_PAREN, data));
         }
 
         /**
@@ -345,7 +345,7 @@ public abstract class ChoiceTests<ExpectedType> {
         @TestFactory
         @DisplayName("nested tests")
         public Stream<DynamicTest> testsWithNesting(){
-            return generateTestDataStream().map(data -> generateTestCase(TestType.WITHOUT_PAREN, data));
+            return generateTestDataStream().map(data -> generateTestCase(TestType.NESTED, data));
         }
 
         /**
