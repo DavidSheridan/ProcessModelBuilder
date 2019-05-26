@@ -9,10 +9,7 @@ import pmc.lang.terminal.ProcessType;
 import pmc.lang.terminal.Terminal;
 import pmc.lang.terminal.TerminalSymbol;
 import pmc.lang.terminal.TerminatorType;
-import test.generator.ExampleTests;
-import test.generator.ReferenceTests;
-import test.generator.SequenceTests;
-import test.generator.TerminatorTests;
+import test.generator.*;
 import test.processor.TestProcessor;
 
 import java.util.ArrayList;
@@ -315,6 +312,155 @@ public class LexerTests {
 
             return tokens;
         }
+    }
+
+    @Nested
+    @DisplayName("choice tests")
+    public class LexerChoiceTests extends ChoiceTests<List<Token>> {
+
+        public LexerChoiceTests(){
+            super(TestProcessor.LEXER);
+        }
+
+        @Override
+        public List<Token> twoBranchExpectedWithoutParentheses(TwoBranchChoiceTests.TestData data){
+            List<Token> tokens = new ArrayList<Token>();
+            tokens.add(new TerminalToken(data.processType));
+            tokens.add(new UpperCaseIdentifierToken("Test"));
+            tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+            for(String action : data.actions1){
+                tokens.add(new LowerCaseIdentifierToken(action));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+            }
+            tokens.add(new TerminalToken(data.terminator));
+            tokens.add(new TerminalToken(TerminalSymbol.CHOICE));
+            for(String action : data.actions2){
+                tokens.add(new LowerCaseIdentifierToken(action));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+            }
+            tokens.add(new TerminalToken(data.terminator));
+            tokens.add(new TerminalToken(TerminalSymbol.DOT));
+
+            return tokens;
+        }
+
+        @Override
+        public List<Token> twoBranchExpectedWithParentheses(TwoBranchChoiceTests.TestData data){
+            List<Token> tokens = new ArrayList<Token>();
+            tokens.add(new TerminalToken(data.processType));
+            tokens.add(new UpperCaseIdentifierToken("Test"));
+            tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+            tokens.add(new TerminalToken(TerminalSymbol.OPEN_PAREN));
+            for(String action : data.actions1){
+                tokens.add(new LowerCaseIdentifierToken(action));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+            }
+            tokens.add(new TerminalToken(data.terminator));
+            tokens.add(new TerminalToken(TerminalSymbol.CHOICE));
+            for(String action : data.actions2){
+                tokens.add(new LowerCaseIdentifierToken(action));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+            }
+            tokens.add(new TerminalToken(data.terminator));
+            tokens.add(new TerminalToken(TerminalSymbol.CLOSE_PAREN));
+            tokens.add(new TerminalToken(TerminalSymbol.DOT));
+
+            return tokens;
+        }
+
+        @Override
+        public List<Token> twoBranchExpectedWithNesting(TwoBranchChoiceTests.TestData data){
+            List<Token> tokens = new ArrayList<Token>();
+            tokens.add(new TerminalToken(data.processType));
+            tokens.add(new UpperCaseIdentifierToken("Test"));
+            tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+            for(String action : data.actions1){
+                tokens.add(new TerminalToken(TerminalSymbol.OPEN_PAREN));
+                tokens.add(new LowerCaseIdentifierToken(action));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+            }
+            tokens.add(new TerminalToken(data.terminator));
+            for(int i = 0; i < data.actions1.length; i++){
+                tokens.add(new TerminalToken(TerminalSymbol.CLOSE_PAREN));
+            }
+            tokens.add(new TerminalToken(TerminalSymbol.CHOICE));
+            for(String action : data.actions2){
+                tokens.add(new TerminalToken(TerminalSymbol.OPEN_PAREN));
+                tokens.add(new LowerCaseIdentifierToken(action));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+            }
+            tokens.add(new TerminalToken(data.terminator));
+            for(int i = 0; i < data.actions2.length; i++){
+                tokens.add(new TerminalToken(TerminalSymbol.CLOSE_PAREN));
+            }
+            tokens.add(new TerminalToken(TerminalSymbol.DOT));
+
+            return tokens;
+        }
+
+        @Override
+        public List<Token> multiBranchExpectedWithoutParentheses(MultiBranchChoiceTests.TestData data){
+            List<Token> tokens = new ArrayList<Token>();
+            tokens.add(new TerminalToken(data.processType));
+            tokens.add(new UpperCaseIdentifierToken(data.identifier));
+            tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+            for(int i = 0; i < data.actions.length; i++){
+                tokens.add(new LowerCaseIdentifierToken(data.actions[i]));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+                tokens.add(new UpperCaseIdentifierToken(data.identifier));
+                if(i < data.actions.length - 1){
+                    tokens.add(new TerminalToken(TerminalSymbol.CHOICE));
+                }
+            }
+            tokens.add(new TerminalToken(TerminalSymbol.DOT));
+
+            return tokens;
+        }
+
+        @Override
+        public List<Token> multiBranchExpectedWithParentheses(MultiBranchChoiceTests.TestData data){
+            List<Token> tokens = new ArrayList<Token>();
+            tokens.add(new TerminalToken(data.processType));
+            tokens.add(new UpperCaseIdentifierToken(data.identifier));
+            tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+            tokens.add(new TerminalToken(TerminalSymbol.OPEN_PAREN));
+            for(int i = 0; i < data.actions.length; i++){
+                tokens.add(new LowerCaseIdentifierToken(data.actions[i]));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+                tokens.add(new UpperCaseIdentifierToken(data.identifier));
+                if(i < data.actions.length - 1){
+                    tokens.add(new TerminalToken(TerminalSymbol.CHOICE));
+                }
+            }
+            tokens.add(new TerminalToken(TerminalSymbol.CLOSE_PAREN));
+            tokens.add(new TerminalToken(TerminalSymbol.DOT));
+
+            return tokens;
+        }
+
+        @Override
+        public List<Token> multiBranchExpectedWithNesting(MultiBranchChoiceTests.TestData data){
+            List<Token> tokens = new ArrayList<Token>();
+            tokens.add(new TerminalToken(data.processType));
+            tokens.add(new UpperCaseIdentifierToken(data.identifier));
+            tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+            tokens.add(new TerminalToken(TerminalSymbol.OPEN_PAREN));
+            for(int i = 0; i < data.actions.length; i++){
+                tokens.add(new TerminalToken(TerminalSymbol.OPEN_PAREN));
+                tokens.add(new LowerCaseIdentifierToken(data.actions[i]));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+                tokens.add(new UpperCaseIdentifierToken(data.identifier));
+                tokens.add(new TerminalToken(TerminalSymbol.CLOSE_PAREN));
+                if(i < data.actions.length - 1){
+                    tokens.add(new TerminalToken(TerminalSymbol.CHOICE));
+                }
+            }
+            tokens.add(new TerminalToken(TerminalSymbol.CLOSE_PAREN));
+            tokens.add(new TerminalToken(TerminalSymbol.DOT));
+
+            return tokens;
+        }
+
     }
 
     @Nested
