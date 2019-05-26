@@ -8,16 +8,11 @@ import pmc.lang.action.element.StringActionElement;
 import pmc.lang.definition.BlockDefinition;
 import pmc.lang.definition.Definition;
 import pmc.lang.definition.ProcessDefinition;
+import pmc.lang.process.*;
 import pmc.lang.process.Process;
-import pmc.lang.process.Reference;
-import pmc.lang.process.Sequence;
-import pmc.lang.process.Terminator;
 import pmc.lang.terminal.ProcessType;
 import pmc.lang.terminal.TerminatorType;
-import test.generator.ExampleTests;
-import test.generator.ReferenceTests;
-import test.generator.SequenceTests;
-import test.generator.TerminatorTests;
+import test.generator.*;
 import test.processor.TestProcessor;
 
 import java.util.ArrayList;
@@ -162,6 +157,59 @@ public class ParserTests {
         @Override
         public AST selfReferenceExpectedWithNesting(SelfReferenceTests.TestData data){
             return selfReferenceExpectedWithoutParentheses(data);
+        }
+    }
+
+    @Nested
+    @DisplayName("choice tests")
+    public class ParserChoiceTests extends ChoiceTests<AST> {
+
+        public ParserChoiceTests(){
+            super(TestProcessor.PARSER);
+        }
+
+        @Override
+        public AST twoBranchExpectedWithoutParentheses(TwoBranchChoiceTests.TestData data){
+            Process sequence1 = new Terminator(data.terminator);
+            for(int i = data.actions1.length - 1; i >= 0; i--){
+                sequence1 = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement(data.actions1[i]))), sequence1);
+            }
+            Process sequence2 = new Terminator(data.terminator);
+            for(int i = data.actions2.length - 1; i >= 0; i--){
+                sequence2 = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement(data.actions2[i]))), sequence2);
+            }
+            Choice choice = new Choice(sequence1, sequence2);
+            return new AST(new BlockDefinition(new ProcessDefinition(data.processType, "Test", choice)));
+        }
+
+        @Override
+        public AST twoBranchExpectedWithParentheses(TwoBranchChoiceTests.TestData data){
+            return twoBranchExpectedWithoutParentheses(data);
+        }
+
+        @Override
+        public AST twoBranchExpectedWithNesting(TwoBranchChoiceTests.TestData data){
+            return twoBranchExpectedWithoutParentheses(data);
+        }
+
+        @Override
+        public AST multiBranchExpectedWithoutParentheses(MultiBranchChoiceTests.TestData data){
+            Process choice = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement(data.actions[data.actions.length - 1]))), new Reference(data.identifier));
+            for(int i = data.actions.length - 2; i >= 0; i--){
+                choice = new Choice(new Sequence(new ActionElementList(Arrays.asList(new StringActionElement(data.actions[i]))), new Reference(data.identifier)), choice);
+            }
+
+            return new AST(new BlockDefinition(new ProcessDefinition(data.processType, data.identifier, choice)));
+        }
+
+        @Override
+        public AST multiBranchExpectedWithParentheses(MultiBranchChoiceTests.TestData data){
+            return multiBranchExpectedWithoutParentheses(data);
+        }
+
+        @Override
+        public AST multiBranchExpectedWithNesting(MultiBranchChoiceTests.TestData data){
+            return multiBranchExpectedWithoutParentheses(data);
         }
     }
 
