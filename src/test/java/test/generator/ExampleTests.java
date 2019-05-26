@@ -35,4 +35,14 @@ public abstract class ExampleTests<ExpectedType> {
 
     public abstract ExpectedType expectedTeaTwoExample();
 
+    @Test
+    @DisplayName("automata TeaThree = (takeTea -> TeaThree).")
+    public void teaThreeExampleTest(){
+        ExpectedType expected = expectedTeaThreeExample();
+        ExpectedType result = processor.process("automata TeaThree = (takeTea -> TeaThree).");
+        assertEquals(expected, result);
+    }
+
+    public abstract ExpectedType expectedTeaThreeExample();
+
 }

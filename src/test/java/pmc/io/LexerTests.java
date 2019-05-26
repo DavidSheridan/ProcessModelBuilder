@@ -357,6 +357,21 @@ public class LexerTests {
             );
         }
 
+        @Override
+        public List<Token> expectedTeaThreeExample(){
+            return Arrays.asList(
+                    new TerminalToken(ProcessType.AUTOMATA),
+                    new UpperCaseIdentifierToken("TeaThree"),
+                    new TerminalToken(TerminalSymbol.ASSIGN),
+                    new TerminalToken(TerminalSymbol.OPEN_PAREN),
+                    new LowerCaseIdentifierToken("takeTea"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new UpperCaseIdentifierToken("TeaThree"),
+                    new TerminalToken(TerminalSymbol.CLOSE_PAREN),
+                    new TerminalToken(TerminalSymbol.DOT)
+            );
+        }
+
     }
 
 }

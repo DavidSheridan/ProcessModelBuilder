@@ -186,6 +186,12 @@ public class ParserTests {
             return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "TeaTwo", sequence)));
         }
 
+        @Override
+        public AST expectedTeaThreeExample(){
+            Sequence sequence = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))), new Reference("TeaThree"));
+            return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "TeaThree", sequence)));
+        }
+
     }
 
 }
