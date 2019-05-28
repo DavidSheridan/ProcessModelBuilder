@@ -61,7 +61,7 @@ public class ParserTests {
 
     @Nested
     @DisplayName("sequence tests")
-    public class ParserSequenceTests extends SequenceTests<AST> {
+    public class ParserSequenceTests extends SimplifiedSequenceTests<AST> {
 
         /**
          * Constructs a new instance of a {@code ParserSequenceTests} object.
@@ -78,37 +78,13 @@ public class ParserTests {
          * @return The expected {@code AST}.
          */
         @Override
-        public AST expectedWithoutParentheses(TestData data){
+        public AST expected(TestData data){
             Process process = new Terminator(data.terminator);
             for(int i = data.actions.length - 1; i >= 0; i--){
                 process = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement(data.actions[i]))), process);
             }
 
             return new AST(new BlockDefinition(new ProcessDefinition(data.processType, data.identifier, process)));
-        }
-
-        /**
-         * Generates and returns the expected {@code AST} for the specified {@code TestData}
-         * with parentheses.
-         *
-         * @param data The test data required to generate the expected {@ocde AST}.
-         * @return The expected {@code AST}.
-         */
-        @Override
-        public AST expectedWithParentheses(TestData data){
-            return expectedWithoutParentheses(data);
-        }
-
-        /**
-         * Generates and returns the expected {@code AST} for the specified {@code TestData}
-         * with nested sequences.
-         *
-         * @param data The test data required to generate the expected {@ocde AST}.
-         * @return The expected {@code AST}.
-         */
-        @Override
-        public AST expectedWithNesting(TestData data){
-            return expectedWithoutParentheses(data);
         }
 
     }
