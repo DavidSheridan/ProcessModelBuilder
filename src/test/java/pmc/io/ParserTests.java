@@ -91,14 +91,14 @@ public class ParserTests {
 
     @Nested
     @DisplayName("reference tests")
-    public class ParserReferenceTests extends ReferenceTests<AST> {
+    public class ParserReferenceTests extends SimplifiedReferenceTests<AST> {
 
         public ParserReferenceTests(){
             super(TestProcessor.PARSER);
         }
 
         @Override
-        public AST sequentialExpectedWithoutParentheses(SequentialReferenceTests.TestData data){
+        public AST expected(SequentialReferenceTests.TestData data){
             List<Definition> definitions = new ArrayList<Definition>();
             for(int i = data.actions.length - 1; i >= 0; i--){
                 Process process = (i == data.actions.length - 1) ? new Terminator(data.terminator) : new Reference(data.actions[i + 1].toUpperCase());
@@ -111,12 +111,7 @@ public class ParserTests {
         }
 
         @Override
-        public AST sequentialExpectedWithParentheses(SequentialReferenceTests.TestData data){
-            return sequentialExpectedWithoutParentheses(data);
-        }
-
-        @Override
-        public AST selfReferenceExpectedWithoutParentheses(SelfReferenceTests.TestData data){
+        public AST expected(SelfReferenceTests.TestData data){
             Process process = new Reference(data.identifier);
             for(int i = data.actions.length - 1; i >= 0; i--){
                 process = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement(data.actions[i]))), process);
@@ -125,15 +120,6 @@ public class ParserTests {
             return new AST(new BlockDefinition(new ProcessDefinition(data.processType, data.identifier, process)));
         }
 
-        @Override
-        public AST selfReferenceExpectedWithParentheses(SelfReferenceTests.TestData data){
-            return selfReferenceExpectedWithoutParentheses(data);
-        }
-
-        @Override
-        public AST selfReferenceExpectedWithNesting(SelfReferenceTests.TestData data){
-            return selfReferenceExpectedWithoutParentheses(data);
-        }
     }
 
     @Nested
