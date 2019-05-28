@@ -504,6 +504,83 @@ public class LexerTests {
         }
 
         @Override
+        public List<Token> expectedCoffeeMachineExample(){
+            return Arrays.asList(
+                    new TerminalToken(ProcessType.AUTOMATA),
+                    new UpperCaseIdentifierToken("CoffeeMachine"),
+                    new TerminalToken(TerminalSymbol.ASSIGN),
+                    new TerminalToken(TerminalSymbol.OPEN_PAREN),
+                    new LowerCaseIdentifierToken("teaButton"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new LowerCaseIdentifierToken("takeTea"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new TerminalToken(TerminatorType.STOP),
+                    new TerminalToken(TerminalSymbol.CHOICE),
+                    new LowerCaseIdentifierToken("coffeeButton"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new LowerCaseIdentifierToken("takeCoffee"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new TerminalToken(TerminatorType.STOP),
+                    new TerminalToken(TerminalSymbol.CLOSE_PAREN),
+                    new TerminalToken(TerminalSymbol.DOT)
+            );
+        }
+
+        @Override
+        public List<Token> expectedCoffeeMachineTwoExample(){
+            return Arrays.asList(
+                    new TerminalToken(ProcessType.AUTOMATA),
+                    new UpperCaseIdentifierToken("CoffeeMachineTwo"),
+                    new TerminalToken(TerminalSymbol.ASSIGN),
+                    new TerminalToken(TerminalSymbol.OPEN_PAREN),
+                    new LowerCaseIdentifierToken("coin"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new TerminalToken(TerminalSymbol.OPEN_PAREN),
+                    new LowerCaseIdentifierToken("teaButton"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new LowerCaseIdentifierToken("takeTea"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new TerminalToken(TerminatorType.STOP),
+                    new TerminalToken(TerminalSymbol.CHOICE),
+                    new LowerCaseIdentifierToken("coffeeButton"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new LowerCaseIdentifierToken("takeCoffee"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new TerminalToken(TerminatorType.STOP),
+                    new TerminalToken(TerminalSymbol.CLOSE_PAREN),
+                    new TerminalToken(TerminalSymbol.CLOSE_PAREN),
+                    new TerminalToken(TerminalSymbol.DOT)
+            );
+        }
+
+        @Override
+        public List<Token> expectedCoffeeMachineThreeExample(){
+            return Arrays.asList(
+                    new TerminalToken(ProcessType.AUTOMATA),
+                    new UpperCaseIdentifierToken("CoffeeMachineThree"),
+                    new TerminalToken(TerminalSymbol.ASSIGN),
+                    new TerminalToken(TerminalSymbol.OPEN_PAREN),
+                    new LowerCaseIdentifierToken("coin"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new LowerCaseIdentifierToken("teaButton"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new LowerCaseIdentifierToken("takeTea"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new TerminalToken(TerminatorType.STOP),
+                    new TerminalToken(TerminalSymbol.CHOICE),
+                    new LowerCaseIdentifierToken("coin"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new LowerCaseIdentifierToken("coffeeButton"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new LowerCaseIdentifierToken("takeCoffee"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new TerminalToken(TerminatorType.STOP),
+                    new TerminalToken(TerminalSymbol.CLOSE_PAREN),
+                    new TerminalToken(TerminalSymbol.DOT)
+            );
+        }
+
+        @Override
         public List<Token> expectedTeaThreeExample(){
             return Arrays.asList(
                     new TerminalToken(ProcessType.AUTOMATA),

@@ -166,6 +166,77 @@ public class ParserTests {
         }
 
         @Override
+        public AST expectedCoffeeMachineExample(){
+            Sequence sequence1 = new Sequence(
+                    new ActionElementList(Arrays.asList(new StringActionElement("teaButton"))),
+                    new Sequence(
+                            new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))),
+                            new Terminator(TerminatorType.STOP)
+                    )
+            );
+            Sequence sequence2 = new Sequence(
+                    new ActionElementList(Arrays.asList(new StringActionElement("coffeeButton"))),
+                    new Sequence(
+                            new ActionElementList(Arrays.asList(new StringActionElement("takeCoffee"))),
+                            new Terminator(TerminatorType.STOP)
+                    )
+            );
+
+            return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "CoffeeMachine", new Choice(sequence1, sequence2))));
+        }
+
+        @Override
+        public AST expectedCoffeeMachineTwoExample(){
+            Sequence sequence = new Sequence(
+                    new ActionElementList(Arrays.asList(new StringActionElement("coin"))),
+                    new Choice(
+                            new Sequence(
+                                new ActionElementList(Arrays.asList(new StringActionElement("teaButton"))),
+                                new Sequence(
+                                            new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))),
+                                            new Terminator(TerminatorType.STOP)
+                                )
+                    ),
+                            new Sequence(
+                                    new ActionElementList(Arrays.asList(new StringActionElement("coffeeButton"))),
+                                    new Sequence(
+                                            new ActionElementList(Arrays.asList(new StringActionElement("takeCoffee"))),
+                                            new Terminator(TerminatorType.STOP)
+                                    )
+                            )
+                    )
+            );
+
+            return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "CoffeeMachineTwo", sequence)));
+        }
+
+        @Override
+        public AST expectedCoffeeMachineThreeExample(){
+            Sequence sequence1 = new Sequence(
+                    new ActionElementList(Arrays.asList(new StringActionElement("coin"))),
+                    new Sequence(
+                            new ActionElementList(Arrays.asList(new StringActionElement("teaButton"))),
+                            new Sequence(
+                                    new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))),
+                                    new Terminator(TerminatorType.STOP)
+                            )
+                    )
+            );
+            Sequence sequence2 = new Sequence(
+                    new ActionElementList(Arrays.asList(new StringActionElement("coin"))),
+                    new Sequence(
+                        new ActionElementList(Arrays.asList(new StringActionElement("coffeeButton"))),
+                        new Sequence(
+                                new ActionElementList(Arrays.asList(new StringActionElement("takeCoffee"))),
+                                new Terminator(TerminatorType.STOP)
+                        )
+                    )
+            );
+
+            return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "CoffeeMachineThree", new Choice(sequence1, sequence2))));
+        }
+
+        @Override
         public AST expectedTeaThreeExample(){
             Sequence sequence = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))), new Reference("TeaThree"));
             return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "TeaThree", sequence)));
