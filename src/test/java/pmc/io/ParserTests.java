@@ -179,7 +179,7 @@ public class ParserTests {
                 sequence2 = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement(data.actions2[i]))), sequence2);
             }
             Choice choice = new Choice(sequence1, sequence2);
-            return new AST(new BlockDefinition(new ProcessDefinition(data.processType, "Test", choice)));
+            return new AST(new BlockDefinition(new ProcessDefinition(data.processType, data.identifier, choice)));
         }
 
         @Override

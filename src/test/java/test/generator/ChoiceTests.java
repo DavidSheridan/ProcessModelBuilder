@@ -286,6 +286,7 @@ public abstract class ChoiceTests<ExpectedType> {
 
             // fields
             public final ProcessType processType;
+            public final String identifier = "Test";
             public final String[] actions1;
             public final String[] actions2;
             public final TerminatorType terminator;

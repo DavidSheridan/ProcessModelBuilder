@@ -326,7 +326,7 @@ public class LexerTests {
         public List<Token> twoBranchExpectedWithoutParentheses(TwoBranchChoiceTests.TestData data){
             List<Token> tokens = new ArrayList<Token>();
             tokens.add(new TerminalToken(data.processType));
-            tokens.add(new UpperCaseIdentifierToken("Test"));
+            tokens.add(new UpperCaseIdentifierToken(data.identifier));
             tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
             for(String action : data.actions1){
                 tokens.add(new LowerCaseIdentifierToken(action));
@@ -348,7 +348,7 @@ public class LexerTests {
         public List<Token> twoBranchExpectedWithParentheses(TwoBranchChoiceTests.TestData data){
             List<Token> tokens = new ArrayList<Token>();
             tokens.add(new TerminalToken(data.processType));
-            tokens.add(new UpperCaseIdentifierToken("Test"));
+            tokens.add(new UpperCaseIdentifierToken(data.identifier));
             tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
             tokens.add(new TerminalToken(TerminalSymbol.OPEN_PAREN));
             for(String action : data.actions1){
@@ -372,7 +372,7 @@ public class LexerTests {
         public List<Token> twoBranchExpectedWithNesting(TwoBranchChoiceTests.TestData data){
             List<Token> tokens = new ArrayList<Token>();
             tokens.add(new TerminalToken(data.processType));
-            tokens.add(new UpperCaseIdentifierToken("Test"));
+            tokens.add(new UpperCaseIdentifierToken(data.identifier));
             tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
             for(String action : data.actions1){
                 tokens.add(new TerminalToken(TerminalSymbol.OPEN_PAREN));
