@@ -162,14 +162,14 @@ public class ParserTests {
 
     @Nested
     @DisplayName("choice tests")
-    public class ParserChoiceTests extends ChoiceTests<AST> {
+    public class ParserChoiceTests extends SimplifiedChoiceTests<AST> {
 
         public ParserChoiceTests(){
             super(TestProcessor.PARSER);
         }
 
         @Override
-        public AST twoBranchExpectedWithoutParentheses(TwoBranchChoiceTests.TestData data){
+        public AST expected(TwoBranchChoiceTests.TestData data){
             Process sequence1 = new Terminator(data.terminator);
             for(int i = data.actions1.length - 1; i >= 0; i--){
                 sequence1 = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement(data.actions1[i]))), sequence1);
@@ -182,18 +182,9 @@ public class ParserTests {
             return new AST(new BlockDefinition(new ProcessDefinition(data.processType, data.identifier, choice)));
         }
 
-        @Override
-        public AST twoBranchExpectedWithParentheses(TwoBranchChoiceTests.TestData data){
-            return twoBranchExpectedWithoutParentheses(data);
-        }
 
         @Override
-        public AST twoBranchExpectedWithNesting(TwoBranchChoiceTests.TestData data){
-            return twoBranchExpectedWithoutParentheses(data);
-        }
-
-        @Override
-        public AST multiBranchExpectedWithoutParentheses(MultiBranchChoiceTests.TestData data){
+        public AST expected(MultiBranchChoiceTests.TestData data){
             Process choice = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement(data.actions[data.actions.length - 1]))), new Reference(data.identifier));
             for(int i = data.actions.length - 2; i >= 0; i--){
                 choice = new Choice(new Sequence(new ActionElementList(Arrays.asList(new StringActionElement(data.actions[i]))), new Reference(data.identifier)), choice);
@@ -202,15 +193,6 @@ public class ParserTests {
             return new AST(new BlockDefinition(new ProcessDefinition(data.processType, data.identifier, choice)));
         }
 
-        @Override
-        public AST multiBranchExpectedWithParentheses(MultiBranchChoiceTests.TestData data){
-            return multiBranchExpectedWithoutParentheses(data);
-        }
-
-        @Override
-        public AST multiBranchExpectedWithNesting(MultiBranchChoiceTests.TestData data){
-            return multiBranchExpectedWithoutParentheses(data);
-        }
     }
 
     @Nested
