@@ -24,7 +24,7 @@ public class ParserTests {
 
     @Nested
     @DisplayName("terminator tests")
-    public class ParserTerminatorTests extends TerminatorTests<AST> {
+    public class ParserTerminatorTests extends SimplifiedTerminatorTests<AST> {
 
         /**
          * Constructs a new instance of a {@code ParserTerminatorTests} object.
@@ -34,27 +34,14 @@ public class ParserTests {
         }
 
         /**
-         * Generates and returns the expected {@code AST} for the specified {@code TestData}
-         * without parentheses.
+         * Generates and returns the expected {@code AST} for the specified {@code TestData}.
          *
          * @param data The test data required to generate the expected {@ocde AST}.
          * @return The expected {@code AST}.
          */
         @Override
-        public AST expectedWithoutParentheses(TestData data){
+        public AST expected(TestData data){
             return new AST(new BlockDefinition(new ProcessDefinition(data.processType, data.identifier, new Terminator(data.terminator))));
-        }
-
-        /**
-         * Generates and returns the expected {@code AST} for the specified {@code TestData}
-         * with parentheses.
-         *
-         * @param data The test data required to generate the expected {@ocde AST}.
-         * @return The expected {@ocde AST}.
-         */
-        @Override
-        public AST expectedWithParentheses(TestData data){
-            return expectedWithoutParentheses(data);
         }
 
     }
