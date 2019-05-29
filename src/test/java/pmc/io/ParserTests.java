@@ -252,7 +252,7 @@ public class ParserTests {
                     new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))),
                     new Reference("TeaThree")
             );
-            
+
             return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "TeaThree", sequence)));
         }
 
