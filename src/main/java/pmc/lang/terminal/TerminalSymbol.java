@@ -7,6 +7,7 @@ public enum TerminalSymbol implements Terminal {
     ASSIGN("="),
     CHOICE("|"),
     CLOSE_PAREN(")"),
+    COMMA(","),
     DOT("."),
     OPEN_PAREN("("),
     SEQUENCE("->");
