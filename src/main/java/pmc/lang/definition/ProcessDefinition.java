@@ -13,6 +13,13 @@ public class ProcessDefinition extends SyntacticElement implements Definition {
     private Process process;
 
     /**
+     * Constructs an empty instance of a {@code ProcessDefinition} object.
+     */
+    private ProcessDefinition(){
+
+    }
+
+    /**
      * Constructs a new instance of a {@code ProcessDefinition} object with the specified
      * {@code ProcessType}, {@code String} identifier and {@code Process}.
      *
@@ -107,6 +114,67 @@ public class ProcessDefinition extends SyntacticElement implements Definition {
     @Override
     public String toString(){
         return processType + " " + identifier + " = " + process + ".";
+    }
+    
+    public static class Builder {
+
+        // field
+        private ProcessDefinition definition;
+
+        /**
+         * Constructs a new instance of a {@code ProcessDefinitionBuilder} object.
+         */
+        public Builder(){
+            definition = new ProcessDefinition();
+        }
+
+        /**
+         * Sets the process type to the specified {@code ProcessType}.
+         *
+         * @param processType The process type.
+         */
+        public void setProcessType(ProcessType processType){
+            definition.processType = processType;
+        }
+
+        /**
+         * Sets the identifier to the specified {@code String} identifier.
+         *
+         * @param identifier The identifier.
+         */
+        public void setIdentifier(String identifier){
+            definition.identifier = identifier;
+        }
+
+        /**
+         * Sets the process to the specified {@code Process}.
+         *
+         * @param process The process.
+         */
+        public void setProcess(Process process){
+            definition.process = process;
+        }
+
+        /**
+         * Constructs and returns a new {@code ProcessDefinition} object based on the current
+         * state of the {@code Builder}.
+         *
+         * @return The process definition.
+         */
+        public ProcessDefinition build(){
+            if(definition.processType == null){
+                throw new IllegalStateException("process type has not been defined");
+            }
+            if(definition.identifier == null){
+                throw new IllegalStateException("identifier has not been defined");
+            }
+            if(definition.process == null){
+                throw new IllegalStateException("process has not been defined");
+            }
+
+            return new ProcessDefinition(definition.processType, definition.identifier, definition.process);
+        }
+
     }
 
 }
