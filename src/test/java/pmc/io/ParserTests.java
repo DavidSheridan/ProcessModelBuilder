@@ -154,14 +154,24 @@ public class ParserTests {
 
         @Override
         public AST expectedTeaExample(){
-            Sequence sequence = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))), new Terminator(TerminatorType.STOP));
+            Sequence sequence = new Sequence(
+                    new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))),
+                    new Terminator(TerminatorType.STOP)
+            );
+
             return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "Tea", sequence)));
         }
 
         @Override
         public AST expectedTeaTwoExample(){
-            Sequence sequence = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))), new Terminator(TerminatorType.STOP));
-            sequence = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement("teaButton"))), sequence);
+            Sequence sequence = new Sequence(
+                    new ActionElementList(Arrays.asList(new StringActionElement("teaButton"))),
+                    new Sequence(
+                            new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))),
+                            new Terminator(TerminatorType.STOP)
+                    )
+            );
+
             return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "TeaTwo", sequence)));
         }
 
@@ -238,7 +248,11 @@ public class ParserTests {
 
         @Override
         public AST expectedTeaThreeExample(){
-            Sequence sequence = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))), new Reference("TeaThree"));
+            Sequence sequence = new Sequence(
+                    new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))),
+                    new Reference("TeaThree")
+            );
+            
             return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "TeaThree", sequence)));
         }
 
