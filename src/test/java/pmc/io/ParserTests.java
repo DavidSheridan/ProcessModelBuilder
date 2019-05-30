@@ -41,7 +41,7 @@ public class ParserTests {
          */
         @Override
         public AST expected(TestData data){
-            return new AST(new BlockDefinition(new ProcessDefinition(data.processType, data.identifier, new Terminator(data.terminator))));
+            return new AST(new BlockDefinition(new ProcessDefinition.Builder(data.processType, data.identifier, new Terminator(data.terminator)).build()));
         }
 
     }
@@ -71,7 +71,7 @@ public class ParserTests {
                 process = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement(data.actions[i]))), process);
             }
 
-            return new AST(new BlockDefinition(new ProcessDefinition(data.processType, data.identifier, process)));
+            return new AST(new BlockDefinition(new ProcessDefinition.Builder(data.processType, data.identifier, process).build()));
         }
 
     }
@@ -91,7 +91,7 @@ public class ParserTests {
                 Process process = (i == data.actions.length - 1) ? new Terminator(data.terminator) : new Reference(data.actions[i + 1].toUpperCase());
                 process = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement(data.actions[i]))), process);
 
-                definitions.add(new ProcessDefinition(data.processType, data.actions[i].toUpperCase(), process));
+                definitions.add(new ProcessDefinition.Builder(data.processType, data.actions[i].toUpperCase(), process).build());
             }
 
             return new AST(new BlockDefinition(definitions));
@@ -104,7 +104,7 @@ public class ParserTests {
                 process = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement(data.actions[i]))), process);
             }
 
-            return new AST(new BlockDefinition(new ProcessDefinition(data.processType, data.identifier, process)));
+            return new AST(new BlockDefinition(new ProcessDefinition.Builder(data.processType, data.identifier, process).build()));
         }
 
     }
@@ -128,7 +128,7 @@ public class ParserTests {
                 sequence2 = new Sequence(new ActionElementList(Arrays.asList(new StringActionElement(data.actions2[i]))), sequence2);
             }
             Choice choice = new Choice(sequence1, sequence2);
-            return new AST(new BlockDefinition(new ProcessDefinition(data.processType, data.identifier, choice)));
+            return new AST(new BlockDefinition(new ProcessDefinition.Builder(data.processType, data.identifier, choice).build()));
         }
 
 
@@ -139,7 +139,7 @@ public class ParserTests {
                 choice = new Choice(new Sequence(new ActionElementList(Arrays.asList(new StringActionElement(data.actions[i]))), new Reference(data.identifier)), choice);
             }
 
-            return new AST(new BlockDefinition(new ProcessDefinition(data.processType, data.identifier, choice)));
+            return new AST(new BlockDefinition(new ProcessDefinition.Builder(data.processType, data.identifier, choice).build()));
         }
 
     }
@@ -159,7 +159,7 @@ public class ParserTests {
                     new Terminator(TerminatorType.STOP)
             );
 
-            return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "Tea", sequence)));
+            return new AST(new BlockDefinition(new ProcessDefinition.Builder(ProcessType.AUTOMATA, "Tea", sequence).build()));
         }
 
         @Override
@@ -172,27 +172,29 @@ public class ParserTests {
                     )
             );
 
-            return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "TeaTwo", sequence)));
+            return new AST(new BlockDefinition(new ProcessDefinition.Builder(ProcessType.AUTOMATA, "TeaTwo", sequence).build()));
         }
 
         @Override
         public AST expectedCoffeeMachineExample(){
-            Sequence sequence1 = new Sequence(
-                    new ActionElementList(Arrays.asList(new StringActionElement("teaButton"))),
+            Choice choice = new Choice(
                     new Sequence(
-                            new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))),
-                            new Terminator(TerminatorType.STOP)
-                    )
-            );
-            Sequence sequence2 = new Sequence(
-                    new ActionElementList(Arrays.asList(new StringActionElement("coffeeButton"))),
+                            new ActionElementList(Arrays.asList(new StringActionElement("teaButton"))),
+                            new Sequence(
+                                    new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))),
+                                    new Terminator(TerminatorType.STOP)
+                            )
+                    ),
                     new Sequence(
-                            new ActionElementList(Arrays.asList(new StringActionElement("takeCoffee"))),
-                            new Terminator(TerminatorType.STOP)
+                            new ActionElementList(Arrays.asList(new StringActionElement("coffeeButton"))),
+                            new Sequence(
+                                    new ActionElementList(Arrays.asList(new StringActionElement("takeCoffee"))),
+                                    new Terminator(TerminatorType.STOP)
+                            )
                     )
             );
 
-            return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "CoffeeMachine", new Choice(sequence1, sequence2))));
+            return new AST(new BlockDefinition(new ProcessDefinition.Builder(ProcessType.AUTOMATA, "CoffeeMachine", choice).build()));
         }
 
         @Override
@@ -217,33 +219,35 @@ public class ParserTests {
                     )
             );
 
-            return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "CoffeeMachineTwo", sequence)));
+            return new AST(new BlockDefinition(new ProcessDefinition.Builder(ProcessType.AUTOMATA, "CoffeeMachineTwo", sequence).build()));
         }
 
         @Override
         public AST expectedCoffeeMachineThreeExample(){
-            Sequence sequence1 = new Sequence(
-                    new ActionElementList(Arrays.asList(new StringActionElement("coin"))),
+            Choice choice = new Choice(
                     new Sequence(
-                            new ActionElementList(Arrays.asList(new StringActionElement("teaButton"))),
+                            new ActionElementList(Arrays.asList(new StringActionElement("coin"))),
                             new Sequence(
-                                    new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))),
-                                    new Terminator(TerminatorType.STOP)
+                                    new ActionElementList(Arrays.asList(new StringActionElement("teaButton"))),
+                                    new Sequence(
+                                            new ActionElementList(Arrays.asList(new StringActionElement("takeTea"))),
+                                            new Terminator(TerminatorType.STOP)
+                                    )
+                            )
+                    ),
+                    new Sequence(
+                            new ActionElementList(Arrays.asList(new StringActionElement("coin"))),
+                            new Sequence(
+                                    new ActionElementList(Arrays.asList(new StringActionElement("coffeeButton"))),
+                                    new Sequence(
+                                            new ActionElementList(Arrays.asList(new StringActionElement("takeCoffee"))),
+                                            new Terminator(TerminatorType.STOP)
+                                )
                             )
                     )
             );
-            Sequence sequence2 = new Sequence(
-                    new ActionElementList(Arrays.asList(new StringActionElement("coin"))),
-                    new Sequence(
-                        new ActionElementList(Arrays.asList(new StringActionElement("coffeeButton"))),
-                        new Sequence(
-                                new ActionElementList(Arrays.asList(new StringActionElement("takeCoffee"))),
-                                new Terminator(TerminatorType.STOP)
-                        )
-                    )
-            );
 
-            return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "CoffeeMachineThree", new Choice(sequence1, sequence2))));
+            return new AST(new BlockDefinition(new ProcessDefinition.Builder(ProcessType.AUTOMATA, "CoffeeMachineThree", choice).build()));
         }
 
         @Override
@@ -253,7 +257,7 @@ public class ParserTests {
                     new Reference("TeaThree")
             );
 
-            return new AST(new BlockDefinition(new ProcessDefinition(ProcessType.AUTOMATA, "TeaThree", sequence)));
+            return new AST(new BlockDefinition(new ProcessDefinition.Builder(ProcessType.AUTOMATA, "TeaThree", sequence).build()));
         }
 
     }

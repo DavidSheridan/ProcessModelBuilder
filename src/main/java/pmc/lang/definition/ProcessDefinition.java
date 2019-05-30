@@ -5,48 +5,42 @@ import pmc.lang.terminal.ProcessType;
 import pmc.util.Position;
 import pmc.util.SyntacticElement;
 
-public class ProcessDefinition extends SyntacticElement implements Definition {
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class ProcessDefinition extends SyntacticElement implements Definition, Iterable<LocalProcessDefinition> {
 
     // fields
     private ProcessType processType;
     private String identifier;
     private Process process;
+    private List<LocalProcessDefinition> localProcesses;
 
     /**
      * Constructs an empty instance of a {@code ProcessDefinition} object.
      */
     private ProcessDefinition(){
-
+        localProcesses = new ArrayList<LocalProcessDefinition>();
     }
 
     /**
      * Constructs a new instance of a {@code ProcessDefinition} object with the specified
-     * {@code ProcessType}, {@code String} identifier and {@code Process}.
+     * {@code ProcessType}, {@code String} identifier, {@code Process} and {@code List} of
+     * local processes.
      *
      * @param processType The process type.
      * @param identifier The process identifier.
      * @param process The process.
-     */
-    public ProcessDefinition(ProcessType processType, String identifier, Process process){
-        this.processType = processType;
-        this.identifier = identifier;
-        this.process = process;
-    }
-
-    /**
-     * Constructs a new instance of a {@code ProcessDefinition} object with the specified
-     * {@code ProcessType}, {@code String} identifier, {@code Process} and {@code Position}.
-     *
-     * @param processType The process type.
-     * @param identifier The process identifier.
-     * @param process The process.
+     * @param localProcesses The list of local processes.
      * @param position The position of the process definition in an input stream.
      */
-    public ProcessDefinition(ProcessType processType, String identifier, Process process, Position position){
+    private ProcessDefinition(ProcessType processType, String identifier, Process process, List<LocalProcessDefinition> localProcesses, Position position){
         super(position);
         this.processType = processType;
         this.identifier = identifier;
         this.process = process;
+        this.localProcesses = new ArrayList<LocalProcessDefinition>(localProcesses);
     }
 
     /**
@@ -75,9 +69,21 @@ public class ProcessDefinition extends SyntacticElement implements Definition {
     }
 
     /**
+     * Returns an iterator over the {@code LocalProcessDefinition} objects in this
+     * {@code ProcessDefinition} in proper sequence.
+     *
+     * @return An iterator over the {@code LocalProcessDefinition} objects in this {@code ProcessDefinition}.
+     */
+    @Override
+    public Iterator<LocalProcessDefinition> iterator(){
+        return localProcesses.iterator();
+    }
+
+    /**
      * Compares this {@code ProcessDefinition} to the specified object. Returns {@code true}
      * if and only if the argument is not {@code null} and is a {@code ProcessDefinition} object
-     * with the same {@code ProcessType}, {@code String} identifier and {@code Process}.
+     * with the same {@code ProcessType}, {@code String} identifier, {@code Process} and {@code List}
+     * of {@code LocalProcessDefinition}s.
      *
      * @param obj The object to compare this {@code ProcessDefinition} against.
      * @return {@code true} if the specified object is equivalent to this one, otherwise {@code false}.
@@ -99,8 +105,11 @@ public class ProcessDefinition extends SyntacticElement implements Definition {
             if(!identifier.equals(definition.identifier)){
                 return false;
             }
+            if(!process.equals(definition.process)){
+                return false;
+            }
 
-            return process.equals(definition.process);
+            return localProcesses.equals(definition.localProcesses);
         }
 
         return false;
@@ -115,17 +124,33 @@ public class ProcessDefinition extends SyntacticElement implements Definition {
     public String toString(){
         return processType + " " + identifier + " = " + process + ".";
     }
-    
+
     public static class Builder {
 
         // field
         private ProcessDefinition definition;
+        private Position position;
 
         /**
-         * Constructs a new instance of a {@code ProcessDefinitionBuilder} object.
+         * Constructs a new instance of a {@code Builder} object.
          */
         public Builder(){
             definition = new ProcessDefinition();
+        }
+
+        /**
+         * Constructs a new instance of a {@code Builder} object with the specified
+         * {@code ProcessType}, {@code String} identifier and {@code Process}.
+         *
+         * @param processType The process type.
+         * @param identifier The identifier.
+         * @param process The process.
+         */
+        public Builder(ProcessType processType, String identifier, Process process){
+            definition = new ProcessDefinition();
+            definition.processType = processType;
+            definition.identifier = identifier;
+            definition.process = process;
         }
 
         /**
@@ -156,6 +181,20 @@ public class ProcessDefinition extends SyntacticElement implements Definition {
         }
 
         /**
+         * Adds the specified {@code LocalProcessDefinition} to the {@code ProcessDefinition}
+         * being built.
+         *
+         * @param localProcess The local process to add.
+         */
+        public void addLocalProcess(LocalProcessDefinition localProcess){
+            definition.localProcesses.add(localProcess);
+        }
+
+        public void setPosition(Position position){
+            this.position = position;
+        }
+
+        /**
          * Constructs and returns a new {@code ProcessDefinition} object based on the current
          * state of the {@code Builder}.
          *
@@ -172,7 +211,7 @@ public class ProcessDefinition extends SyntacticElement implements Definition {
                 throw new IllegalStateException("process has not been defined");
             }
 
-            return new ProcessDefinition(definition.processType, definition.identifier, definition.process);
+            return new ProcessDefinition(definition.processType, definition.identifier, definition.process, definition.localProcesses, position);
         }
 
     }

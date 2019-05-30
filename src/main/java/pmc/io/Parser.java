@@ -42,13 +42,15 @@ public class Parser {
     }
 
     private ProcessDefinition parseProcessDefinition(){
-        ProcessType processType = (ProcessType)match(ProcessType.values());
-        String identifier = parseIdentifier();
+        ProcessDefinition.Builder builder = new ProcessDefinition.Builder();
+
+        builder.setProcessType((ProcessType)match(ProcessType.values()));
+        builder.setIdentifier(parseIdentifier());
         match(TerminalSymbol.ASSIGN);
-        Process process = parseChoice();
+        builder.setProcess(parseChoice());
         match(TerminalSymbol.DOT);
 
-        return new ProcessDefinition(processType, identifier, process);
+        return builder.build();
     }
 
     private String parseIdentifier(){
