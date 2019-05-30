@@ -464,6 +464,125 @@ public class LexerTests {
     }
 
     @Nested
+    @DisplayName("local process tests")
+    public class LexerLocalProcessTests extends LocalProcessTests<List<Token>> {
+
+        /**
+         * Constructs a new instance of a {@code LexerLocalProcessTests} object.
+         */
+        public LexerLocalProcessTests(){
+            super(TestProcessor.LEXER);
+        }
+
+        @Override
+        public List<Token> sequentialExpectedWithoutParentheses(SequentialLocalProcessTests.TestData data){
+            List<Token> tokens = new ArrayList<Token>();
+
+            tokens.add(new TerminalToken(data.processType));
+            tokens.add(new UpperCaseIdentifierToken(data.actions[0].toUpperCase()));
+            tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+            for(int i = 0; i < data.actions.length; i++){
+                tokens.add(new LowerCaseIdentifierToken(data.actions[i]));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+                if(i < data.actions.length - 1){
+                    tokens.add(new UpperCaseIdentifierToken(data.actions[i + 1].toUpperCase()));
+                    tokens.add(new TerminalToken(TerminalSymbol.COMMA));
+                    tokens.add(new UpperCaseIdentifierToken(data.actions[i + 1].toUpperCase()));
+                    tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+                }
+                else{
+                    tokens.add(new TerminalToken(data.terminator));
+                    tokens.add(new TerminalToken(TerminalSymbol.DOT));
+                }
+            }
+
+            return tokens;
+        }
+
+        @Override
+        public List<Token> sequentialExpectedWithParentheses(SequentialLocalProcessTests.TestData data){
+            List<Token> tokens = new ArrayList<Token>();
+
+            tokens.add(new TerminalToken(data.processType));
+            tokens.add(new UpperCaseIdentifierToken(data.actions[0].toUpperCase()));
+            tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+            for(int i = 0; i < data.actions.length; i++){
+                tokens.add(new TerminalToken(TerminalSymbol.OPEN_PAREN));
+                tokens.add(new LowerCaseIdentifierToken(data.actions[i]));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+                if(i < data.actions.length - 1){
+                    tokens.add(new UpperCaseIdentifierToken(data.actions[i + 1].toUpperCase()));
+                    tokens.add(new TerminalToken(TerminalSymbol.CLOSE_PAREN));
+                    tokens.add(new TerminalToken(TerminalSymbol.COMMA));
+                    tokens.add(new UpperCaseIdentifierToken(data.actions[i + 1].toUpperCase()));
+                    tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+                }
+                else{
+                    tokens.add(new TerminalToken(data.terminator));
+                    tokens.add(new TerminalToken(TerminalSymbol.CLOSE_PAREN));
+                    tokens.add(new TerminalToken(TerminalSymbol.DOT));
+                }
+            }
+
+            return tokens;
+        }
+
+        @Override
+        public List<Token> loopedExpectedWithoutParentheses(LoopedLocalProcessTests.TestData data){
+            List<Token> tokens = new ArrayList<Token>();
+
+            tokens.add(new TerminalToken(data.processType));
+            tokens.add(new UpperCaseIdentifierToken(data.actions[0].toUpperCase()));
+            tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+            for(int i = 0; i < data.actions.length; i++){
+                tokens.add(new LowerCaseIdentifierToken(data.actions[i]));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+                if(i < data.actions.length - 1){
+                    tokens.add(new UpperCaseIdentifierToken(data.actions[i + 1].toUpperCase()));
+                    tokens.add(new TerminalToken(TerminalSymbol.COMMA));
+                    tokens.add(new UpperCaseIdentifierToken(data.actions[i + 1].toUpperCase()));
+                    tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+                }
+                else{
+                    tokens.add(new UpperCaseIdentifierToken(data.actions[0].toUpperCase()));
+                    tokens.add(new TerminalToken(TerminalSymbol.DOT));
+                }
+            }
+
+            return tokens;
+        }
+
+        @Override
+        public List<Token> loopedExpectedWithParentheses(LoopedLocalProcessTests.TestData data){
+            List<Token> tokens = new ArrayList<Token>();
+
+            tokens.add(new TerminalToken(data.processType));
+            tokens.add(new UpperCaseIdentifierToken(data.actions[0].toUpperCase()));
+            tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+            for(int i = 0; i < data.actions.length; i++){
+                tokens.add(new TerminalToken(TerminalSymbol.OPEN_PAREN));
+                tokens.add(new LowerCaseIdentifierToken(data.actions[i]));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+                if(i < data.actions.length - 1){
+                    tokens.add(new UpperCaseIdentifierToken(data.actions[i + 1].toUpperCase()));
+                    tokens.add(new TerminalToken(TerminalSymbol.CLOSE_PAREN));
+                    tokens.add(new TerminalToken(TerminalSymbol.COMMA));
+                    tokens.add(new UpperCaseIdentifierToken(data.actions[i + 1].toUpperCase()));
+                    tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+                }
+                else{
+                    tokens.add(new UpperCaseIdentifierToken(data.actions[0].toUpperCase()));
+                    tokens.add(new TerminalToken(TerminalSymbol.CLOSE_PAREN));
+                    tokens.add(new TerminalToken(TerminalSymbol.DOT));
+                }
+            }
+
+            return tokens;
+        }
+
+    }
+
+    @Nested
     @DisplayName("example tests")
     public class LexerExampleTests extends ExampleTests<List<Token>> {
 
