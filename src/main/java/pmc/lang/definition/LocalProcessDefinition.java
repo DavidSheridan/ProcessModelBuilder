@@ -1,5 +1,6 @@
 package pmc.lang.definition;
 
+import pmc.lang.process.Process;
 import pmc.util.Position;
 import pmc.util.SyntacticElement;
 

@@ -7,6 +7,7 @@ import pmc.lang.action.ActionElementList;
 import pmc.lang.action.element.StringActionElement;
 import pmc.lang.definition.BlockDefinition;
 import pmc.lang.definition.Definition;
+import pmc.lang.definition.LocalProcessDefinition;
 import pmc.lang.definition.ProcessDefinition;
 import pmc.lang.process.*;
 import pmc.lang.process.Process;
@@ -142,6 +143,61 @@ public class ParserTests {
             return new AST(new BlockDefinition(new ProcessDefinition.Builder(data.processType, data.identifier, choice).build()));
         }
 
+    }
+
+    @Nested
+    @DisplayName("local process tests")
+    public class ParserLocalProcessTests extends SimplifiedLocalProcessTests<AST> {
+
+        public ParserLocalProcessTests(){
+            super(TestProcessor.PARSER);
+        }
+
+        @Override
+        public AST expected(SequentialLocalProcessTests.TestData data){
+            ProcessDefinition.Builder builder = new ProcessDefinition.Builder();
+            builder.setProcessType(data.processType);
+            builder.setIdentifier(data.actions[0].toUpperCase());
+
+            for(int i = 0; i < data.actions.length; i++){
+                Sequence sequence = new Sequence(
+                        new ActionElementList(Arrays.asList(new StringActionElement(data.actions[i]))),
+                        i < data.actions.length - 1 ? new Reference(data.actions[i + 1].toUpperCase()) : new Terminator(data.terminator)
+                );
+
+                if(i == 0){
+                    builder.setProcess(sequence);
+                }
+                else{
+                    builder.addLocalProcess(new LocalProcessDefinition(data.actions[i].toUpperCase(), sequence));
+                }
+            }
+
+            return new AST(new BlockDefinition(Arrays.asList(builder.build())));
+        }
+
+        @Override
+        public AST expected(LoopedLocalProcessTests.TestData data){
+            ProcessDefinition.Builder builder = new ProcessDefinition.Builder();
+            builder.setProcessType(data.processType);
+            builder.setIdentifier(data.actions[0].toUpperCase());
+
+            for(int i = 0; i < data.actions.length; i++){
+                Sequence sequence = new Sequence(
+                        new ActionElementList(Arrays.asList(new StringActionElement(data.actions[i]))),
+                        i < data.actions.length - 1 ? new Reference(data.actions[i + 1].toUpperCase()) : new Reference(data.actions[0].toUpperCase())
+                );
+
+                if(i == 0){
+                    builder.setProcess(sequence);
+                }
+                else{
+                    builder.addLocalProcess(new LocalProcessDefinition(data.actions[i].toUpperCase(), sequence));
+                }
+            }
+
+            return new AST(new BlockDefinition(Arrays.asList(builder.build())));
+        }
     }
 
     @Nested
