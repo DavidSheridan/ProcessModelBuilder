@@ -8,6 +8,7 @@ import pmc.lang.action.element.ActionElement;
 import pmc.lang.action.element.StringActionElement;
 import pmc.lang.definition.BlockDefinition;
 import pmc.lang.definition.Definition;
+import pmc.lang.definition.LocalProcessDefinition;
 import pmc.lang.definition.ProcessDefinition;
 import pmc.lang.process.*;
 import pmc.lang.process.Process;
@@ -48,6 +49,16 @@ public class Parser {
         builder.setIdentifier(parseIdentifier());
         match(TerminalSymbol.ASSIGN);
         builder.setProcess(parseChoice());
+
+        while(hasNext(TerminalSymbol.COMMA)){
+            match(TerminalSymbol.COMMA);
+            String identifier = parseIdentifier();
+            match(TerminalSymbol.ASSIGN);
+            Process process = parseChoice();
+
+            builder.addLocalProcess(new LocalProcessDefinition(identifier, process));
+        }
+
         match(TerminalSymbol.DOT);
 
         return builder.build();
