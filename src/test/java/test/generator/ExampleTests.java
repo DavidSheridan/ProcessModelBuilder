@@ -75,4 +75,24 @@ public abstract class ExampleTests<ExpectedType> {
 
     public abstract ExpectedType expectedTeaThreeExample();
 
+    @Test
+    @DisplayName("automata P = (a -> Q), Q = (b -> P | c -> Q).")
+    public void localProcessExample(){
+        ExpectedType expected = expectedLocalProcessExample();
+        ExpectedType result = processor.process("automata P = (a -> Q), Q = (b -> P | c -> Q).");
+        assertEquals(expected, result);
+    }
+
+    public abstract ExpectedType expectedLocalProcessExample();
+
+    @Test
+    @DisplayName("automata TrRed = (red -> TrRed | turnGreen -> TrGreen), TrGreen = (green -> TrGreen | turnRed -> TrRed).")
+    public void trafficLightExample(){
+        ExpectedType expected = expectedTrafficLightExample();
+        ExpectedType result = processor.process("automata TrRed = (red -> TrRed | turnGreen -> TrGreen), TrGreen = (green -> TrGreen | turnRed -> TrRed).");
+        assertEquals(expected, result);
+    }
+
+    public abstract ExpectedType expectedTrafficLightExample();
+
 }
