@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.UpperCase;
 import pmc.io.Lexer.*;
 import pmc.lang.terminal.ProcessType;
 import pmc.lang.terminal.Terminal;
@@ -709,6 +710,64 @@ public class LexerTests {
                     new LowerCaseIdentifierToken("takeTea"),
                     new TerminalToken(TerminalSymbol.SEQUENCE),
                     new UpperCaseIdentifierToken("TeaThree"),
+                    new TerminalToken(TerminalSymbol.CLOSE_PAREN),
+                    new TerminalToken(TerminalSymbol.DOT)
+            );
+        }
+
+        @Override
+        public List<Token> expectedLocalProcessExample(){
+            return Arrays.asList(
+                    new TerminalToken(ProcessType.AUTOMATA),
+                    new UpperCaseIdentifierToken("P"),
+                    new TerminalToken(TerminalSymbol.ASSIGN),
+                    new TerminalToken(TerminalSymbol.OPEN_PAREN),
+                    new LowerCaseIdentifierToken("a"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new UpperCaseIdentifierToken("Q"),
+                    new TerminalToken(TerminalSymbol.CLOSE_PAREN),
+                    new TerminalToken(TerminalSymbol.COMMA),
+                    new UpperCaseIdentifierToken("Q"),
+                    new TerminalToken(TerminalSymbol.ASSIGN),
+                    new TerminalToken(TerminalSymbol.OPEN_PAREN),
+                    new LowerCaseIdentifierToken("b"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new UpperCaseIdentifierToken("P"),
+                    new TerminalToken(TerminalSymbol.CHOICE),
+                    new LowerCaseIdentifierToken("c"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new UpperCaseIdentifierToken("Q"),
+                    new TerminalToken(TerminalSymbol.CLOSE_PAREN),
+                    new TerminalToken(TerminalSymbol.DOT)
+            );
+        }
+
+        @Override
+        public List<Token> expectedTrafficLightExample(){
+            return Arrays.asList(
+                    new TerminalToken(ProcessType.AUTOMATA),
+                    new UpperCaseIdentifierToken("TrRed"),
+                    new TerminalToken(TerminalSymbol.ASSIGN),
+                    new TerminalToken(TerminalSymbol.OPEN_PAREN),
+                    new LowerCaseIdentifierToken("red"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new UpperCaseIdentifierToken("TrRed"),
+                    new TerminalToken(TerminalSymbol.CHOICE),
+                    new LowerCaseIdentifierToken("turnGreen"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new UpperCaseIdentifierToken("TrGreen"),
+                    new TerminalToken(TerminalSymbol.CLOSE_PAREN),
+                    new TerminalToken(TerminalSymbol.COMMA),
+                    new UpperCaseIdentifierToken("TrGreen"),
+                    new TerminalToken(TerminalSymbol.ASSIGN),
+                    new TerminalToken(TerminalSymbol.OPEN_PAREN),
+                    new Lexer.LowerCaseIdentifierToken("green"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new UpperCaseIdentifierToken("TrGreen"),
+                    new TerminalToken(TerminalSymbol.CHOICE),
+                    new LowerCaseIdentifierToken("turnRed"),
+                    new TerminalToken(TerminalSymbol.SEQUENCE),
+                    new UpperCaseIdentifierToken("TrRed"),
                     new TerminalToken(TerminalSymbol.CLOSE_PAREN),
                     new TerminalToken(TerminalSymbol.DOT)
             );

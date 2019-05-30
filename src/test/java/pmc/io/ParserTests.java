@@ -316,6 +316,60 @@ public class ParserTests {
             return new AST(new BlockDefinition(new ProcessDefinition.Builder(ProcessType.AUTOMATA, "TeaThree", sequence).build()));
         }
 
+        @Override
+        public AST expectedLocalProcessExample(){
+            ProcessDefinition.Builder builder = new ProcessDefinition.Builder();
+            builder.setProcessType(ProcessType.AUTOMATA);
+            builder.setIdentifier("P");
+            builder.setProcess(new Sequence(
+                    new ActionElementList(Arrays.asList(new StringActionElement("a"))),
+                    new Reference("Q")
+            ));
+
+            builder.addLocalProcess(new LocalProcessDefinition("Q", new Choice(
+                    new Sequence(
+                            new ActionElementList(Arrays.asList(new StringActionElement("b"))),
+                            new Reference("P")
+                    ),
+                    new Sequence(
+                            new ActionElementList(Arrays.asList(new StringActionElement("c"))),
+                            new Reference("Q")
+                    )
+            )));
+
+            return new AST(new BlockDefinition(builder.build()));
+        }
+
+        @Override
+        public AST expectedTrafficLightExample(){
+            ProcessDefinition.Builder builder = new ProcessDefinition.Builder();
+            builder.setProcessType(ProcessType.AUTOMATA);
+            builder.setIdentifier("TrRed");
+            builder.setProcess(new Choice(
+                    new Sequence(
+                            new ActionElementList(Arrays.asList(new StringActionElement("red"))),
+                            new Reference("TrRed")
+                    ),
+                    new Sequence(
+                            new ActionElementList(Arrays.asList(new StringActionElement("turnGreen"))),
+                            new Reference("TrGreen")
+                    )
+            ));
+
+            builder.addLocalProcess(new LocalProcessDefinition("TrGreen", new Choice(
+                    new Sequence(
+                            new ActionElementList(Arrays.asList(new StringActionElement("green"))),
+                            new Reference("TrGreen")
+                    ),
+                    new Sequence(
+                            new ActionElementList(Arrays.asList(new StringActionElement("turnRed"))),
+                            new Reference("TrRed")
+                    )
+            )));
+
+            return new AST(new BlockDefinition(builder.build()));
+        }
+
     }
 
 }
