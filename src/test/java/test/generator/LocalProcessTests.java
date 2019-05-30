@@ -158,6 +158,17 @@ public abstract class LocalProcessTests<ExpectedType> {
         private String inputWithoutParentheses(TestData data){
             StringBuilder builder = new StringBuilder();
 
+            builder.append(data.processType + " " + data.actions[0].toUpperCase() + " = ");
+            for(int i = 0; i < data.actions.length; i++){
+                builder.append(data.actions[i] + " -> ");
+                if(i < data.actions.length - 1){
+                    builder.append(data.actions[i + 1].toUpperCase() + ", " + data.actions[i + 1].toUpperCase() + " = ");
+                }
+                else{
+                    builder.append(data.terminator + ".");
+                }
+            }
+
             return builder.toString();
         }
 
@@ -171,6 +182,17 @@ public abstract class LocalProcessTests<ExpectedType> {
          */
         private String inputWithParentheses(TestData data){
             StringBuilder builder = new StringBuilder();
+
+            builder.append(data.processType + " " + data.actions[0].toUpperCase() + " = (");
+            for(int i = 0; i < data.actions.length; i++){
+                builder.append(data.actions[i] + " -> ");
+                if(i < data.actions.length - 1){
+                    builder.append(data.actions[i + 1].toUpperCase() + "), " + data.actions[i + 1].toUpperCase() + " = (");
+                }
+                else{
+                    builder.append(data.terminator + ").");
+                }
+            }
 
             return builder.toString();
         }
@@ -304,6 +326,17 @@ public abstract class LocalProcessTests<ExpectedType> {
         private String inputWithoutParentheses(TestData data){
             StringBuilder builder = new StringBuilder();
 
+            builder.append(data.processType + " " + data.actions[0].toUpperCase() + " = ");
+            for(int i = 0; i < data.actions.length; i++){
+                builder.append(data.actions[i] + " -> ");
+                if(i < data.actions.length - 1){
+                    builder.append(data.actions[i + 1].toUpperCase() + ", " + data.actions[i + 1].toUpperCase() + " = ");
+                }
+                else{
+                    builder.append(data.actions[0].toUpperCase() + ".");
+                }
+            }
+
             return builder.toString();
         }
 
@@ -317,6 +350,18 @@ public abstract class LocalProcessTests<ExpectedType> {
          */
         private String inputWithParentheses(TestData data){
             StringBuilder builder = new StringBuilder();
+
+            builder.append(data.processType + " " + data.actions[0].toUpperCase() + " = (");
+            for(int i = 0; i < data.actions.length; i++){
+                builder.append(data.actions[i] + " -> ");
+                if(i < data.actions.length - 1){
+                    builder.append(data.actions[i + 1].toUpperCase() + "), " + data.actions[i + 1].toUpperCase() + " = (");
+                }
+                else{
+                    builder.append(data.actions[0].toUpperCase() + ").");
+                }
+            }
+
 
             return builder.toString();
         }
