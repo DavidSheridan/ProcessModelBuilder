@@ -42,10 +42,31 @@ public class Parser {
         return new AST(new BlockDefinition(definitions));
     }
 
-    private ProcessDefinition parseProcessDefinition(){
+    private Definition parseProcessDefinition(){
+        ProcessType processType = (ProcessType)match(ProcessType.values());
+        if(hasNext(TerminalSymbol.OPEN_BRACE)){
+            return parseBlockDefinition(processType);
+        }
+
+        return parseSingleProcessDefinition(processType);
+    }
+
+    private BlockDefinition parseBlockDefinition(ProcessType processType){
+        match(TerminalSymbol.OPEN_BRACE);
+        List<Definition> definitions = new ArrayList<Definition>();
+        while(!hasNext(TerminalSymbol.CLOSE_BRACE)){
+            definitions.add(parseSingleProcessDefinition(processType));
+        }
+
+        match(TerminalSymbol.CLOSE_BRACE);
+
+        return new BlockDefinition(definitions);
+    }
+
+    private ProcessDefinition parseSingleProcessDefinition(ProcessType processType){
         ProcessDefinition.Builder builder = new ProcessDefinition.Builder();
 
-        builder.setProcessType((ProcessType)match(ProcessType.values()));
+        builder.setProcessType(processType);
         builder.setIdentifier(parseIdentifier());
         match(TerminalSymbol.ASSIGN);
         builder.setProcess(parseChoice());
