@@ -6,9 +6,11 @@ package pmc.lang.terminal;
 public enum TerminalSymbol implements Terminal {
     ASSIGN("="),
     CHOICE("|"),
+    CLOSE_BRACE("}"),
     CLOSE_PAREN(")"),
     COMMA(","),
     DOT("."),
+    OPEN_BRACE("{"),
     OPEN_PAREN("("),
     SEQUENCE("->");
 
