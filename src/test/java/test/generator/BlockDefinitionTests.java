@@ -118,7 +118,7 @@ public abstract class BlockDefinitionTests<ExpectedType> {
 
         builder.append(data.processType + " {");
         for(String action : data.actions){
-            builder.append(action.toUpperCase() + " = (" + action + " -> " + data.terminator + ").");
+            builder.append(action.toUpperCase() + " = " + action + " -> " + data.terminator + ".");
         }
         builder.append(" }");
 
