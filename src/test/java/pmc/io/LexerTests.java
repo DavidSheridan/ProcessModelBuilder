@@ -584,6 +584,59 @@ public class LexerTests {
     }
 
     @Nested
+    @DisplayName("block definition tests")
+    public class LexerBlockDefinitionTests extends BlockDefinitionTests<List<Token>> {
+
+        /**
+         * Constructs a new instance of a {@code BlockDefinitionTests} object.
+         */
+        public LexerBlockDefinitionTests(){
+            super(TestProcessor.LEXER);
+        }
+
+        @Override
+        public List<Token> expectedWithoutParentheses(TestData data){
+            List<Token> tokens = new ArrayList<Token>();
+
+            tokens.add(new TerminalToken(data.processType));
+            tokens.add(new TerminalToken(TerminalSymbol.OPEN_BRACE));
+            for(String action : data.actions){
+                tokens.add(new UpperCaseIdentifierToken(action.toUpperCase()));
+                tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+                tokens.add(new LowerCaseIdentifierToken(action));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+                tokens.add(new TerminalToken(data.terminator));
+                tokens.add(new TerminalToken(TerminalSymbol.DOT));
+            }
+            tokens.add(new TerminalToken(TerminalSymbol.CLOSE_BRACE));
+
+            return tokens;
+        }
+
+        @Override
+        public List<Token> expectedWithParentheses(TestData data){
+            List<Token> tokens = new ArrayList<Token>();
+
+            tokens.add(new TerminalToken(data.processType));
+            tokens.add(new TerminalToken(TerminalSymbol.OPEN_BRACE));
+            for(String action : data.actions){
+                tokens.add(new UpperCaseIdentifierToken(action.toUpperCase()));
+                tokens.add(new TerminalToken(TerminalSymbol.ASSIGN));
+                tokens.add(new TerminalToken(TerminalSymbol.OPEN_PAREN));
+                tokens.add(new LowerCaseIdentifierToken(action));
+                tokens.add(new TerminalToken(TerminalSymbol.SEQUENCE));
+                tokens.add(new TerminalToken(data.terminator));
+                tokens.add(new TerminalToken(TerminalSymbol.CLOSE_PAREN));
+                tokens.add(new TerminalToken(TerminalSymbol.DOT));
+            }
+            tokens.add(new TerminalToken(TerminalSymbol.CLOSE_BRACE));
+
+            return tokens;
+        }
+
+    }
+
+    @Nested
     @DisplayName("example tests")
     public class LexerExampleTests extends ExampleTests<List<Token>> {
 
