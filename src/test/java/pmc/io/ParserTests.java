@@ -19,6 +19,7 @@ import test.processor.TestProcessor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @DisplayName("parser tests")
 public class ParserTests {
@@ -197,6 +198,34 @@ public class ParserTests {
             }
 
             return new AST(new BlockDefinition(Arrays.asList(builder.build())));
+        }
+    }
+
+    @Nested
+    @DisplayName("block definition tests")
+    public class ParserBlockDefinitionTests extends SimplifiedBlockDefinitionTests<AST> {
+
+        /**
+         * Constructs a new instance of a {@code ParserBlockDefinitionTests}.
+         */
+        public ParserBlockDefinitionTests(){
+            super(TestProcessor.PARSER);
+        }
+
+        @Override
+        public AST expected(TestData data){
+            List<Definition> definitions = Arrays.stream(data.actions).map(
+                    action -> {
+                        Sequence sequence = new Sequence(
+                                new ActionElementList(Arrays.asList(new StringActionElement(action))),
+                                new Terminator(data.terminator)
+                        );
+
+                        return new ProcessDefinition.Builder(data.processType, action.toUpperCase(), sequence).build();
+                    }
+            ).collect(Collectors.toList());
+
+            return new AST(new BlockDefinition(new BlockDefinition(definitions)));
         }
     }
 
